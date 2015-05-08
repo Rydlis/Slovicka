@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import java.util.Optional;
 
-class dialogy {
+class Dialogy {
 
     // zavedeni tridy Alert
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -31,6 +31,7 @@ class dialogy {
     }
 
     // funkce na potvrzovaci dialog
+    // TODO dodelat funkci aby cetla data z Listu a vracela zvolenou hodnotu
     public Optional<ButtonType> potvrd(String nadpis, String dotaz){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(nadpis);

@@ -3,7 +3,6 @@
  */
 package sample;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -15,12 +14,16 @@ public class Controller {
 
     int i = 0;
 
-    slovicka slovicka = new slovicka();
+    Slovicka slovicka = new Slovicka();
 
     public void handleImport(ActionEvent event) {
         slovicka.slova();
         // ObservableList<String> seznam = slovicka.parser();
         // list.setItems(seznam);
+    }
+
+    public void handleStartTest(){
+
     }
 
     public void handleExit (){

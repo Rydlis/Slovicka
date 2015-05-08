@@ -9,10 +9,11 @@ import java.io.File;
  * Created by david on 2.4.15.
  */
 public class VyberSouboru {
-    FileChooser fileChooser = new FileChooser();                                                                        // zavedeni tridy FileChooseru
+    FileChooser fileChooser = new FileChooser();      // zavedeni tridy FileChooseru
 
-    Stage stage;                                                                                                        // zavdeni nove Stage
+    Stage stage;                                      // zavdeni nove Stage
 
+    /* funkce pro vyber souboru ve formatu xls */
     public File vyber(){
         fileChooser.setTitle("Otevři soubory");
         fileChooser.getExtensionFilters().addAll(

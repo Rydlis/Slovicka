@@ -13,10 +13,10 @@ import jxl.read.biff.BiffException;
 import java.io.IOException;
 import java.util.List;
 
-public class slovicka {
+public class Slovicka {
 
     private final VyberSouboru vyberSouboru = new VyberSouboru();
-    private final dialogy dialog = new dialogy();
+    private final Dialogy dialog = new Dialogy();
 
     private List<String> cesky;
     private List<String> anglicky;
