@@ -2,7 +2,7 @@
  * Jenom Bůh ví co se v této třídě doopravdy děje, ale dal mi dar prozření a tak se to pokusím vysvětlit
  * tato třída importuje ceske a anglicke slovicka ze souboru který ji byl přidělen.
  * Děje se tak za pomoci funkce "slova()", která nic nevrací, pouze vyhazuje vyjimky
- * Dále je tu parser který dělá to, že vezme české slovicko, spočítá jeho délku a od 60 prazdych mist odecte vysledek,
+ * Dále je tu parser který dělá to, že vezme české slovicko, spočítá jeho délku a od 50 prazdych mist odecte vysledek,
  * a vysledek je pocet prazdych znaku ktere se dosadi za ceske slovicko, za tohle vsechno se dosadí anglické slovíčko
  * tato trida je package-local
  * */
@@ -19,12 +19,15 @@ import java.util.List;
 
 class Slovicka {
 
+    // zavedeni potrebnych trid
     private final VyberSouboru vyberSouboru = new VyberSouboru();
     private final Dialogy dialog = new Dialogy();
 
+    // zavedeni databazi na ceske a anglicke slovicka
     private ArrayList<String> cesky = new ArrayList<>();
     private ArrayList<String> anglicky = new ArrayList<>();
 
+    // funkce na import slovicek do databazi
     public void slova(){
         try {
             Workbook workbook = Workbook.getWorkbook(vyberSouboru.vyber());
@@ -48,11 +51,8 @@ class Slovicka {
 
     // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho slova, prida k nemu 60 - delka_cesky mezeru a potom prida anglicke slovo
     public String parser(int i){
-        int delka_cesky = cesky.get(i).length();
-        int mezera = 60 - delka_cesky;
-        System.out.println(mezera);
-        StringBuilder stringBuffer = new StringBuilder(mezera);
-        for(int j = 0; j < mezera; j++) {
+        StringBuilder stringBuffer = new StringBuilder();
+        for(int j = 0; j < (50 - cesky.get(i).length()); ++j) {
             stringBuffer.append(" ");
         }
         return cesky.get(i) + stringBuffer + anglicky.get(i);

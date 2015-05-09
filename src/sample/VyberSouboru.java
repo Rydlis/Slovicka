@@ -6,19 +6,17 @@ import javafx.stage.Stage;
 import java.io.File;
 
 /**
- * Created by david on 2.4.15.
+ * Trida na vyber souboru, vyber je uskutecnen pres knihovnu FileChooser
  */
 class VyberSouboru {
-    FileChooser fileChooser = new FileChooser();      // zavedeni tridy FileChooseru
 
-    Stage stage = new Stage();                        // zavdeni nove Stage
-
-    /* funkce pro vyber souboru ve formatu xls */
+    // funkce pro vyber souboru ve formatu xls
     public File vyber(){
+        FileChooser fileChooser = new FileChooser();                // zavedeni tridy FileChooseru
         fileChooser.setTitle("Otevři soubory");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Excel", "*.xls")
         );
-        return fileChooser.showOpenDialog(stage);
+        return fileChooser.showOpenDialog(new Stage());
     }
 }

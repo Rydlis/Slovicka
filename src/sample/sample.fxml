@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
@@ -21,7 +22,36 @@
           </Tab>
           <Tab closable="false" style="-fx-background-color: transparent;" text="Test">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="421.0" layoutY="94.0" prefHeight="500.0" prefWidth="500.0" AnchorPane.bottomAnchor="93.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="94.0">
+                           <children>
+                              <GridPane prefHeight="506.0" prefWidth="500.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="249.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="268.0" minWidth="10.0" prefWidth="251.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="79.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="123.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="243.0" minHeight="10.0" prefHeight="181.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="119.0" minHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="134.0" minHeight="10.0" prefHeight="122.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Počet slovíček" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Slider GridPane.columnIndex="1" />
+                                    <ImageView fx:id="ceska_vlajka" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                    <ImageView fx:id="anglicka_vlajka" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                                    <CheckBox fx:id="ces_check" mnemonicParsing="false" text="Cesky" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                    <CheckBox fx:id="ces_check1" mnemonicParsing="false" text="Anglicky" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                                    <Label text="Zvoleno: " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="pocet_slov" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="67.0" text="Začít" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                                 </children>
+                              </GridPane>
+                           </children></VBox>
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab closable="false" style="-fx-background-color: transparent;" text="Statistika">

@@ -30,8 +30,10 @@ public class Controller {
             }
             listView.setItems(list);
             dialogy.info("Info", "Slovíčka byla naimportována");
-        } catch (Exception e){                                      // zpracování vseobecne vyjimky, uživatel stejně nebude vědět co je to IndexOutOfBound nebo NullPOinterException
+        } catch (IndexOutOfBoundsException e){                      // zpracovani vyjimky kdy je index vetsi jak pole
             dialogy.chyba("Chyba", "Při výkonu akce došlo k chybě");
+        } catch (NullPointerException e){                           // soubor nenalezen nebo uzivatel zadny nezvolil
+            System.out.println("soubor nevybran");
         }
     }
 
