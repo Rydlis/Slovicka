@@ -1,5 +1,5 @@
-/*
-* Muhehe, můj kód :)
+/**
+* Tato třída se stará o start aplikace.
 */
 
 package sample;

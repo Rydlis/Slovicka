@@ -3,7 +3,7 @@ package sample;
 /**
  * Created by david on 2.4.15.
  */
-public class STatistika {
+class STatistika {
 
     private Double CELKOVY_CAS;
     private Double CAS;

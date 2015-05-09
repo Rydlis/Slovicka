@@ -1,8 +1,10 @@
 /**
  * Jenom Bůh ví co se v této třídě doopravdy děje, ale dal mi dar prozření a tak se to pokusím vysvětlit
  * tato třída importuje ceske a anglicke slovicka ze souboru který ji byl přidělen.
- * Děje se tak za pomoci funkce "slova()" jejiž návratový typ je List.
- * Dále je tu parser který dělá to, že vezme české slovicko, spočítá jeho délku a od 60 prazdych mist odecte vysledek, za tohle vsechno se dosadí abglické slovíčko
+ * Děje se tak za pomoci funkce "slova()", která nic nevrací, pouze vyhazuje vyjimky
+ * Dále je tu parser který dělá to, že vezme české slovicko, spočítá jeho délku a od 60 prazdych mist odecte vysledek,
+ * a vysledek je pocet prazdych znaku ktere se dosadi za ceske slovicko, za tohle vsechno se dosadí anglické slovíčko
+ * tato trida je package-local
  * */
 package sample;
 
@@ -10,17 +12,18 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Slovicka {
+class Slovicka {
 
     private final VyberSouboru vyberSouboru = new VyberSouboru();
+    private final Dialogy dialog = new Dialogy();
 
     private ArrayList<String> cesky = new ArrayList<>();
     private ArrayList<String> anglicky = new ArrayList<>();
-    private ArrayList soupis = new ArrayList();
 
     public void slova(){
         try {
@@ -37,17 +40,19 @@ public class Slovicka {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Neco se pokazilo behem zapisu do databaze");
+            dialog.chyba("Chyba", "Soubor nemohl být otevřen");
         } catch (BiffException e) {
             System.out.println("Neco se pokazilo behem zapisu do databaze");
         }
     }
 
+    // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho slova, prida k nemu 60 - delka_cesky mezeru a potom prida anglicke slovo
     public String parser(int i){
         int delka_cesky = cesky.get(i).length();
         int mezera = 60 - delka_cesky;
-        StringBuffer stringBuffer = new StringBuffer(mezera);
-        for(i = 0; i < mezera; ++i) {
+        System.out.println(mezera);
+        StringBuilder stringBuffer = new StringBuilder(mezera);
+        for(int j = 0; j < mezera; j++) {
             stringBuffer.append(" ");
         }
         return cesky.get(i) + stringBuffer + anglicky.get(i);

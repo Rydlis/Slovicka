@@ -1,5 +1,7 @@
 /**
  * Vytvořeno David Rejdlem za ucelem zprehledneni kodu
+ * Tato trida byla použita u více projektu a rad bych ji i zverejnil jako API
+ * TODO predelat na podporu javy 7
  * navic, komu by se to chtelo porad psat
  * Tato trida bylo optimalizovana pomoci IntelliJ Idea Analyzator
  * trida je package-local, proto chybi "public" pred "class"

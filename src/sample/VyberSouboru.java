@@ -8,7 +8,7 @@ import java.io.File;
 /**
  * Created by david on 2.4.15.
  */
-public class VyberSouboru {
+class VyberSouboru {
     FileChooser fileChooser = new FileChooser();      // zavedeni tridy FileChooseru
 
     Stage stage = new Stage();                        // zavdeni nove Stage

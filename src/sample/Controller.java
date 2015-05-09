@@ -9,10 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
-import java.util.List;
-
 public class Controller {
-
+    // zavdeni všeho potřebného
     @FXML
     private ListView<String> listView;
 
@@ -22,16 +20,18 @@ public class Controller {
     Slovicka slovicka = new Slovicka();
     Dialogy dialogy = new Dialogy();
 
+    // ne zcela pekna funkce na import slovicek a jejich vykresleni do ListView
     public void handleImport(ActionEvent event) {
         try {
             slovicka.slova();
-            for (i = 0; i <= slovicka.getCesky().size(); ++i){
-                list.add(slovicka.parser(i));
+            int pocet_slov = slovicka.getCesky().size() -1;         // takovy nepekny hack toho, ze index zacina je 0->88 a delka je 1-89, proto se odecita jednicka
+            for (i = 0; i <= pocet_slov; i++){
+                list.add(slovicka.parser(i));                       // pridani slovicek do databaze typu ObservableList pro tisknuti do listView
             }
             listView.setItems(list);
             dialogy.info("Info", "Slovíčka byla naimportována");
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception e){                                      // zpracování vseobecne vyjimky, uživatel stejně nebude vědět co je to IndexOutOfBound nebo NullPOinterException
+            dialogy.chyba("Chyba", "Při výkonu akce došlo k chybě");
         }
     }
 
@@ -39,6 +39,7 @@ public class Controller {
 
     }
 
+    // funkce pro ukončení aplikace
     public void handleExit (){
         System.exit(0);
     }
