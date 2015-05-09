@@ -11,7 +11,7 @@ import java.io.File;
 public class VyberSouboru {
     FileChooser fileChooser = new FileChooser();      // zavedeni tridy FileChooseru
 
-    Stage stage;                                      // zavdeni nove Stage
+    Stage stage = new Stage();                        // zavdeni nove Stage
 
     /* funkce pro vyber souboru ve formatu xls */
     public File vyber(){

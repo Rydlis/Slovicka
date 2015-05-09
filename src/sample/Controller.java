@@ -3,23 +3,36 @@
  */
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
+import java.util.List;
+
 public class Controller {
 
     @FXML
-    private ListView<String> list;
+    private ListView<String> listView;
 
+    private ObservableList<String> list = FXCollections.observableArrayList();
     int i = 0;
 
     Slovicka slovicka = new Slovicka();
+    Dialogy dialogy = new Dialogy();
 
     public void handleImport(ActionEvent event) {
-        slovicka.slova();
-        // ObservableList<String> seznam = slovicka.parser();
-        // list.setItems(seznam);
+        try {
+            slovicka.slova();
+            for (i = 0; i <= slovicka.getCesky().size(); ++i){
+                list.add(slovicka.parser(i));
+            }
+            listView.setItems(list);
+            dialogy.info("Info", "Slovíčka byla naimportována");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void handleStartTest(){

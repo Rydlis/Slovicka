@@ -17,13 +17,12 @@ import java.util.List;
 public class Slovicka {
 
     private final VyberSouboru vyberSouboru = new VyberSouboru();
-    private final Dialogy dialog = new Dialogy();
 
-    private ArrayList<String> cesky;
-    private ArrayList<String> anglicky;
-    private ArrayList soupis;
+    private ArrayList<String> cesky = new ArrayList<>();
+    private ArrayList<String> anglicky = new ArrayList<>();
+    private ArrayList soupis = new ArrayList();
 
-    public ArrayList slova(){
+    public void slova(){
         try {
             Workbook workbook = Workbook.getWorkbook(vyberSouboru.vyber());
             Sheet sheet = workbook.getSheet(0);
@@ -31,22 +30,28 @@ public class Slovicka {
                 for(int i = 0; i < sheet.getRows(); ++i) {
                     Cell cell = sheet.getCell(j, i);
                     if(j == 0) {
-                        System.out.println(cell.getContents());
                         cesky.add(cell.getContents());
                     } else if(j == 1) {
                         anglicky.add(cell.getContents());
                     }
                 }
             }
-            //dialog.info("Import", "Import byl proveden správně");
         } catch (IOException e) {
-            //dialog.chyba("Chyba", "Import neprobehl správně");
+            System.out.println("Neco se pokazilo behem zapisu do databaze");
         } catch (BiffException e) {
-            System.out.println("");
+            System.out.println("Neco se pokazilo behem zapisu do databaze");
         }
-        return soupis;
     }
 
+    public String parser(int i){
+        int delka_cesky = cesky.get(i).length();
+        int mezera = 60 - delka_cesky;
+        StringBuffer stringBuffer = new StringBuffer(mezera);
+        for(i = 0; i < mezera; ++i) {
+            stringBuffer.append(" ");
+        }
+        return cesky.get(i) + stringBuffer + anglicky.get(i);
+    }
 
     public List<String> getCesky() {
         return cesky;

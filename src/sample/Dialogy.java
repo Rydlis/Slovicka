@@ -23,6 +23,14 @@ class Dialogy {
         alert.showAndWait();                        // zobrazeni dialogu s nasim textem
     }
 
+    // funkce na tisk alertu, nechtelo se mi psat dalsi 3 radky kodu ke kazdemu try/catch, navic tohle zprehlednuje kod
+    public void info(String nadpis, String popis){
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(nadpis);                // nastaveni nadpisu
+        alert.setContentText(popis);                // nastaveni popisu chyby
+        alert.showAndWait();                        // zobrazeni dialogu s nasim textem
+    }
+
     // funkce na potvrzovaci dialog
     public Optional<ButtonType> potvrd(String nadpis, String dotaz){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
