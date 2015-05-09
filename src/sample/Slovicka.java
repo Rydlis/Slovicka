@@ -38,9 +38,9 @@ public class Slovicka {
                     }
                 }
             }
-            dialog.info("Import", "Import byl proveden správně");
+            //dialog.info("Import", "Import byl proveden správně");
         } catch (IOException e) {
-            dialog.chyba("Chyba", "Import neprobehl správně");
+            //dialog.chyba("Chyba", "Import neprobehl správně");
         } catch (BiffException e) {
             System.out.println("");
         }

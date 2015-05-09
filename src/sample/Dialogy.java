@@ -8,6 +8,7 @@ package sample;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+
 import java.util.Optional;
 
 class Dialogy {
@@ -22,16 +23,7 @@ class Dialogy {
         alert.showAndWait();                        // zobrazeni dialogu s nasim textem
     }
 
-    // funkce na tisk alertu, nechtelo se mi psat dalsi 3 radky kodu ke kazdemu try/catch, navic tohle zprehlednuje kod
-    public void info(String nadpis, String popis){
-        alert.setAlertType(Alert.AlertType.INFORMATION); // nastavi dialog na info
-        alert.setHeaderText(nadpis);                // nastaveni nadpisu
-        alert.setContentText(popis);                // nastaveni popisu chyby
-        alert.showAndWait();                        // zobrazeni dialogu s nasim textem
-    }
-
     // funkce na potvrzovaci dialog
-    // TODO dodelat funkci aby cetla data z Listu a vracela zvolenou hodnotu
     public Optional<ButtonType> potvrd(String nadpis, String dotaz){
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText(nadpis);
