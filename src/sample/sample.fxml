@@ -9,7 +9,7 @@
    <children>
       <TabPane layoutX="94.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab closable="false" style="-fx-background-color: transparent;" text="Slovicka ">
+          <Tab fx:id="tab1" closable="false" style="-fx-background-color: transparent;" text="Slovicka ">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -21,7 +21,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab closable="false" style="-fx-background-color: transparent;" text="Test">
+          <Tab fx:id="tab2" closable="false" style="-fx-background-color: transparent;" text="Test">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -42,7 +42,7 @@
                                  </font>
                               </Label>
                               <TextField fx:id="input_slovo" alignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <GridPane fx:id="tlacitka_div" opacity="0.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                              <GridPane fx:id="tlacitka_div" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -53,7 +53,7 @@
                                 </rowConstraints>
                                  <children>
                                     <Button fx:id="zpet" mnemonicParsing="false" text="Zpět" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Button fx:id="ukoncit" mnemonicParsing="false" text="Ukončit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Button fx:id="ukoncit" mnemonicParsing="false" onAction="#handleUkoncitTest" text="Ukončit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                     <Button fx:id="dalsi" mnemonicParsing="false" text="Další" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                  </children>
                               </GridPane>
@@ -73,31 +73,46 @@
                           </rowConstraints>
                            <children>
                               <Label text="Počet slovíček" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Slider GridPane.columnIndex="1" />
+                              <Slider fx:id="pocet_slov_slider" GridPane.columnIndex="1" />
                               <ImageView fx:id="ceska_vlajka" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                               <ImageView fx:id="anglicka_vlajka" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                               <Label text="Zvoleno: " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                               <Label fx:id="pocet_slov" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <RadioButton mnemonicParsing="false" text="Cesky" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                              <RadioButton fx:id="chk_cesky" mnemonicParsing="false" text="Cesky" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                               <Button mnemonicParsing="false" onAction="#handleStartTest" prefHeight="38.0" prefWidth="67.0" text="Začít" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                              <RadioButton mnemonicParsing="false" text="Anglicky" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                              <RadioButton fx:id="chk_anglicky" mnemonicParsing="false" text="Anglicky" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab closable="false" style="-fx-background-color: transparent;" text="Statistika">
+            <Tab fx:id="tab3" closable="false" style="-fx-background-color: transparent;" text="Statistika">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <GridPane layoutX="592.0" layoutY="254.0" AnchorPane.bottomAnchor="93.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="94.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
       </TabPane>
-      <MenuBar style="-fx-background-color: transparent;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+      <MenuBar fx:id="menu" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import dat" />
+                  <MenuItem mnemonicParsing="false" text="Export statistiky" />
               <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Ukončit" />
             </items>
           </Menu>
