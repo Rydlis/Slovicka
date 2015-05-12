@@ -54,7 +54,7 @@
                                  <children>
                                     <Button fx:id="zpet" mnemonicParsing="false" text="Zpět" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                     <Button fx:id="ukoncit" mnemonicParsing="false" onAction="#handleUkoncitTest" text="Ukončit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Button fx:id="dalsi" mnemonicParsing="false" text="Další" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Button fx:id="dalsi" mnemonicParsing="false" onAction="#handleDalsi" text="Další" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                  </children>
                               </GridPane>
                            </children>
@@ -101,6 +101,16 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
+                           <children>
+                              <Label text="Správné odpovědi: " />
+                              <Label text="Špatné odpovědi: " GridPane.rowIndex="1" />
+                              <Label text="Celkových odpovědí: " GridPane.rowIndex="2" />
+                              <Label text="Úspěšnost: " GridPane.rowIndex="3" />
+                              <Label fx:id="sprav_odpoved" text="0" GridPane.columnIndex="1" />
+                              <Label fx:id="spat_odpoved" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="celk_odpoved" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label fx:id="uspesnost" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                           </children>
                         </GridPane>
                      </children></AnchorPane>
               </content>
@@ -109,7 +119,13 @@
       </TabPane>
       <MenuBar fx:id="menu" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="Nápověda">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#handleJakPouzit" text="Jak ovládat" />
+                  <MenuItem mnemonicParsing="false" text="O apliakci" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Nastavení">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import dat" />
                   <MenuItem mnemonicParsing="false" text="Export statistiky" />

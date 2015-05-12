@@ -49,30 +49,46 @@ public class Controller implements Initializable{
     @FXML
     private Label pocet_slov;
     @FXML
+    private Label sprav_odpoved;
+    @FXML
+    private Label spat_odpoved;
+    @FXML
+    private Label celk_odpoved;
+    @FXML
+    private Label uspesnost;
+    @FXML
     private RadioButton chk_cesky;
     @FXML
     private RadioButton chk_anglicky;
     @FXML
     private Slider pocet_slov_slider;
+    @FXML
+    private TextField input_slovo;
 
     // zavedeni promennych
     private ObservableList<String> list = FXCollections.observableArrayList();
-    private int i = 0;
+    private int opakovani;
+    private int pocet_opak = 1;
 
     // zavedeni knihoven
     private final Slovicka slovicka = new Slovicka();
     private final Dialogy dialogy = new Dialogy();
+    private final STatistika statistika = new STatistika();
     private final FadeTransition fadeTransition = new FadeTransition();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ceska_vlajka.setImage(new Image(new File("czech.jpg").toURI().toString()));
         anglicka_vlajka.setImage(new Image(new File("uk.jpg").toURI().toString()));
+        // prvotni nastaveni seekbaru po kazdem spusteni aplikace
         pocet_slov_slider.setBlockIncrement(1);
         pocet_slov_slider.setMin(0);
+        pocet_slov_slider.setMax(0);
         pocet_slov_slider.setValue(0);
+        // novy handler pro seekbar, predelan do levelu 8 lambda
         pocet_slov_slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             pocet_slov.setText(String.valueOf(newValue.intValue()));
+            opakovani = newValue.intValue();
         });
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);
@@ -83,7 +99,7 @@ public class Controller implements Initializable{
         try {
             slovicka.slova();
             int pocet_slov_db = slovicka.getCesky().size() -1;         // takovy nepekny hack toho, ze index je 0->88 a delka je 1-89, proto se odecita jednicka
-            for (i = 0; i <= pocet_slov_db; ++i){
+            for (int i = 0; i <= pocet_slov_db; ++i){
                 list.add(slovicka.parser(i));                       // pridani slovicek do databaze typu ObservableList pro tisknuti do listView
             }
             listView.setItems(list);
@@ -109,12 +125,11 @@ public class Controller implements Initializable{
         if ((chk_cesky.isSelected()) && (chk_anglicky.isSelected())){           // jestli jsou zvolene 2 jazyky tak se start prerusi a vrati do nastaveni a objevi se dialog s upozornenim
             handleUkoncitTest();
             dialogy.chyba("Chyba", "Zvolte pouze jeden jazyk");
-        } else if ((!chk_cesky.isSelected())&& (!chk_anglicky.isSelected())){   // jestli neni zvolen zadny jazyk, start se presrusi a objevi se dialog s upozornenim
+        } else if ((!chk_cesky.isSelected()) && (!chk_anglicky.isSelected())){   // jestli neni zvolen zadny jazyk, start se presrusi a objevi se dialog s upozornenim
             handleUkoncitTest();
             dialogy.chyba("Chyba", "Zvolte alespon jeden jazyk");
         }
         else {
-            System.out.println("zacatek testu");
             test();
         }
     }
@@ -122,21 +137,37 @@ public class Controller implements Initializable{
     // funkce na ovladani testu, tato funkce po vyplneni zavola funkci kontrola()
     // mezitim tato funkce losuje slovicka z vybraneho jazyka a zobrazuje je v Labelu
     private void test(){
-        for (int i = 0; i<= pocet_slov_slider.getValue(); i++) {
+        if (opakovani > pocet_opak){
+            int vylosovany_index = new Random().nextInt(slovicka.getCesky().size() - 1);
             if (chk_cesky.isSelected()) {
-                slovo.setText(slovicka.getCesky().get(new Random().nextInt(slovicka.getCesky().size() - 1))); // nepekny hack kvuli rozdilu navratove hodnoty size() a indexem
-                Kontrola();
+                slovo.setText(slovicka.getCesky().get(vylosovany_index)); // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
             } else {
-                slovo.setText(slovicka.getAnglicky().get(new Random().nextInt(slovicka.getAnglicky().size() -1))); // dalsi nepekny hack, stejny jako u predesle funkce, akorat pro anglicke slovicka
-                Kontrola();
+                slovo.setText(slovicka.getAnglicky().get(vylosovany_index)); // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
             }
+        } else {
+            sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
+            spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
+            celk_odpoved.setText(String.valueOf(statistika.getCelkove_odpovedi()));
+            uspesnost.setText(String.valueOf(statistika.getCelkove_odpovedi() / statistika.getSpravne_odpovedi()) + "%");
+            handleUkoncitTest();
         }
     }
 
     // fuknce na kontrolu spravnosti odpovedi, kdy se teto fuknci posle zodpovezene slovicko a na zaklade spravnosti
     // se pricte spravna odpoved do statistiky
-    private void Kontrola(){
-
+    public void handleDalsi(){
+        if (chk_cesky.isSelected()){
+            if (slovicka.getAnglicky().contains(input_slovo.getText())){
+                statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);
+            } else statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() +1);
+        }
+        else if (chk_anglicky.isSelected()){
+            if (slovicka.getCesky().contains(input_slovo.getText())){
+                statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);
+            } else statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() +1);
+        }
+        pocet_opak++;
+        test();
     }
 
     // funkce na ukonceni testu a vraceni se do nastaveni, opet umozni ovladat program pomoci Tabs a Menu
@@ -157,6 +188,11 @@ public class Controller implements Initializable{
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(100);
         fadeTransition.play();
+    }
+
+    public void handleJakPouzit(){
+        dialogy.info("Jak používat", "Před startem aplikace vyber soubor se slovíčky\naplikace je automaticky naimportuje a můžes se začít testovat\n" +
+                "Na začátku si vyber jazyk ze kterého se chceš zkoušet a klikni na začít");
     }
 
     // funkce pro ukončení aplikace

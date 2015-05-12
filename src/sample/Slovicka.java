@@ -49,7 +49,7 @@ class Slovicka {
         }
     }
 
-    // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho slova, prida k nemu 60 - delka_cesky mezeru a potom prida anglicke slovo
+    // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho slova, prida k nemu 50 - delka_cesky mezeru a potom prida anglicke slovo
     public String parser(int i){
         StringBuilder stringBuffer = new StringBuilder();
         for(int j = 0; j < (50 - cesky.get(i).length()); ++j) {
