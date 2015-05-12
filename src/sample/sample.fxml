@@ -9,7 +9,7 @@
    <children>
       <TabPane layoutX="94.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab fx:id="tab1" closable="false" style="-fx-background-color: transparent;" text="Slovicka ">
+          <Tab fx:id="tab1" closable="false" style="-fx-background-color: transparent;" text="Slovíčka">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -21,7 +21,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tab2" closable="false" style="-fx-background-color: transparent;" text="Test">
+          <Tab fx:id="tab2" closable="false" style="-fx-background-color: transparent;" text="Testování">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -44,7 +44,6 @@
                               <TextField fx:id="input_slovo" alignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                               <GridPane fx:id="tlacitka_div" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 </columnConstraints>
@@ -52,9 +51,8 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button fx:id="zpet" mnemonicParsing="false" text="Zpět" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Button fx:id="ukoncit" mnemonicParsing="false" onAction="#handleUkoncitTest" text="Ukončit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Button fx:id="dalsi" mnemonicParsing="false" onAction="#handleDalsi" text="Další" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Button fx:id="ukoncit" mnemonicParsing="false" onAction="#handlePredbezneUkoncit" text="Ukončit" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Button fx:id="dalsi" mnemonicParsing="false" onAction="#handleDalsi" text="Další" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                  </children>
                               </GridPane>
                            </children>
@@ -122,13 +120,14 @@
             <Menu mnemonicParsing="false" text="Nápověda">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#handleJakPouzit" text="Jak ovládat" />
-                  <MenuItem mnemonicParsing="false" text="O apliakci" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleOAppce" text="O apliakci" />
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Nastavení">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import dat" />
                   <MenuItem mnemonicParsing="false" text="Export statistiky" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleVymazatStatistiku" text="Vymazat statistiku" />
               <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Ukončit" />
             </items>
           </Menu>

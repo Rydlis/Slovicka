@@ -43,7 +43,7 @@ class Slovicka {
                 }
             }
         } catch (IOException e) {
-            dialog.chyba("Chyba", "Soubor nemohl být otevřen");
+            dialog.Error("Chyba", "Soubor nemohl být otevřen");
         } catch (BiffException e) {
             System.out.println("Neco se pokazilo behem zapisu do databaze");
         }

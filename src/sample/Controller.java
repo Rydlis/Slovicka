@@ -9,15 +9,17 @@ package sample;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.File;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -68,18 +70,18 @@ public class Controller implements Initializable{
     // zavedeni promennych
     private ObservableList<String> list = FXCollections.observableArrayList();
     private int opakovani;
-    private int pocet_opak = 1;
+    private int pocet_opak = 0;
 
     // zavedeni knihoven
     private final Slovicka slovicka = new Slovicka();
     private final Dialogy dialogy = new Dialogy();
-    private final STatistika statistika = new STatistika();
+    private final Statistika statistika = new Statistika();
     private final FadeTransition fadeTransition = new FadeTransition();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ceska_vlajka.setImage(new Image(new File("czech.jpg").toURI().toString()));
-        anglicka_vlajka.setImage(new Image(new File("uk.jpg").toURI().toString()));
+        ceska_vlajka.setImage(new Image(getClass().getResource("czech.jpg").toExternalForm()));
+        anglicka_vlajka.setImage(new Image(getClass().getResource("uk.jpg").toExternalForm()));
         // prvotni nastaveni seekbaru po kazdem spusteni aplikace
         pocet_slov_slider.setBlockIncrement(1);
         pocet_slov_slider.setMin(0);
@@ -90,6 +92,14 @@ public class Controller implements Initializable{
             pocet_slov.setText(String.valueOf(newValue.intValue()));
             opakovani = newValue.intValue();
         });
+        input_slovo.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER){
+                    handleDalsi();
+                }
+            }
+        });
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);
     }
@@ -98,17 +108,17 @@ public class Controller implements Initializable{
     public void handleImport() {
         try {
             slovicka.slova();
-            int pocet_slov_db = slovicka.getCesky().size() -1;         // takovy nepekny hack toho, ze index je 0->88 a delka je 1-89, proto se odecita jednicka
+            int pocet_slov_db = slovicka.getCesky().size() -1;      // takovy nepekny hack toho, ze index je 0->88 a delka je 1-89, proto se odecita jednicka
             for (int i = 0; i <= pocet_slov_db; ++i){
                 list.add(slovicka.parser(i));                       // pridani slovicek do databaze typu ObservableList pro tisknuti do listView
             }
             listView.setItems(list);
             pocet_slov_slider.setMax(slovicka.getCesky().size());   // nastaveni maximalni hodnoty na slideru
-            dialogy.info("Info", "Slovíčka byla naimportována");
+            dialogy.Info("Info", "Slovíčka byla naimportována");
         } catch (IndexOutOfBoundsException e){                      // zpracovani vyjimky kdy je index vetsi jak pole
-            dialogy.chyba("Chyba", "Při výkonu akce došlo k chybě");
+            dialogy.Error("Chyba", "Při výkonu akce došlo k chybě");
         } catch (NullPointerException e){                           // soubor nenalezen nebo uzivatel zadny nezvolil
-            dialogy.chyba("Chyba", "Soubor nevybrán");
+            dialogy.Error("Chyba", "Soubor nevybrán");
         }
     }
 
@@ -124,10 +134,10 @@ public class Controller implements Initializable{
         menu.setDisable(true);
         if ((chk_cesky.isSelected()) && (chk_anglicky.isSelected())){           // jestli jsou zvolene 2 jazyky tak se start prerusi a vrati do nastaveni a objevi se dialog s upozornenim
             handleUkoncitTest();
-            dialogy.chyba("Chyba", "Zvolte pouze jeden jazyk");
+            dialogy.Error("Chyba", "Zvolte pouze jeden jazyk");
         } else if ((!chk_cesky.isSelected()) && (!chk_anglicky.isSelected())){   // jestli neni zvolen zadny jazyk, start se presrusi a objevi se dialog s upozornenim
             handleUkoncitTest();
-            dialogy.chyba("Chyba", "Zvolte alespon jeden jazyk");
+            dialogy.Error("Chyba", "Zvolte alespon jeden jazyk");
         }
         else {
             test();
@@ -148,7 +158,9 @@ public class Controller implements Initializable{
             sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
             spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
             celk_odpoved.setText(String.valueOf(statistika.getCelkove_odpovedi()));
-            uspesnost.setText(String.valueOf(statistika.getCelkove_odpovedi() / statistika.getSpravne_odpovedi()) + "%");
+            System.out.println(statistika.vypocetStatistiky());
+            uspesnost.setText(String.valueOf(statistika.vypocetStatistiky()));
+            statistika.setPOCET_ZKOUSENI(statistika.getPOCET_ZKOUSENI() +1);
             handleUkoncitTest();
         }
     }
@@ -159,18 +171,32 @@ public class Controller implements Initializable{
         if (chk_cesky.isSelected()){
             if (slovicka.getAnglicky().contains(input_slovo.getText())){
                 statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);
-            } else statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() +1);
+            } else {
+                statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() + 1);
+            }
         }
         else if (chk_anglicky.isSelected()){
             if (slovicka.getCesky().contains(input_slovo.getText())){
                 statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);
-            } else statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() +1);
+            } else {
+                statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() +1);
+            }
         }
+        input_slovo.clear();
+        statistika.setCelkove_odpovedi(statistika.getCelkove_odpovedi() +1);
         pocet_opak++;
         test();
     }
 
-    // funkce na ukonceni testu a vraceni se do nastaveni, opet umozni ovladat program pomoci Tabs a Menu
+    // funkce pro predbezne ukonceni s potvrzujicim dialogem
+    public void handlePredbezneUkoncit() {
+        ButtonType volba = dialogy.Confirm("Potvrďte", "Opravdu chcete ukončit testování?").get();
+        if (volba == ButtonType.OK){
+            handleUkoncitTest();
+        }
+    }
+
+    // funkce na ukonceni testu a vraceni se do nastaveni, opet umozni ovladat program pomoci Tabs a Menu a taky vraci hodnoty do vychozi hodnoty
     public void handleUkoncitTest(){
         fadeIn(nastaveni_div);
         nastaveni_div.setDisable(false);
@@ -179,6 +205,12 @@ public class Controller implements Initializable{
         tab1.setDisable(false);
         tab3.setDisable(false);
         menu.setDisable(false);
+        pocet_opak = 0;
+    }
+
+    // funkce na volani vymazani statistiky, volana funkce se nachazi ve tride STatistika
+    public void handleVymazatStatistiku(){
+        statistika.smazatStatistiku();
     }
 
     // funkce na FadeIn animaci, kdy se teto funkci posle Nod na ktery ma byt animace navazana
@@ -190,12 +222,21 @@ public class Controller implements Initializable{
         fadeTransition.play();
     }
 
+    // vyhodi dialog s popisem ovladani aplikace
     public void handleJakPouzit(){
-        dialogy.info("Jak používat", "Před startem aplikace vyber soubor se slovíčky\naplikace je automaticky naimportuje a můžes se začít testovat\n" +
+        dialogy.Info("Jak používat", "Před startem aplikace vyber soubor se slovíčky\n" +
+                "aplikace je automaticky naimportuje a můžes se začít testovat\n" +
                 "Na začátku si vyber jazyk ze kterého se chceš zkoušet a klikni na začít");
     }
 
-    // funkce pro ukončení aplikace
+    // vyhodi dialog s informacemi o aplikaci
+    public void handleOAppce(){
+        dialogy.Info("Info o aplikace", "Tuto aplikaci naprogramoval David Rejdl\n" +
+                "Více informací na www.github.com/Rydlis\n" +
+                "Verze aplikace Beta 1, rok 2015");
+    }
+
+    // funkce pro ukončení aplikace, pred ukoncenim vola exportDat() pro ulozeni statistiky do textoveho souboru
     public void handleExit (){
         System.exit(0);
     }

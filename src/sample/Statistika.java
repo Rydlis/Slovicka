@@ -4,7 +4,7 @@ package sample;
  * Created by david on 2.4.15.
  * TODO export a import statistiky
  */
-class STatistika {
+class Statistika {
 
     private Double CELKOVY_CAS;
     private Double zacatecni_cas;
@@ -19,6 +19,17 @@ class STatistika {
 
     public void exportDat(){
 
+    }
+
+    public double vypocetStatistiky(){
+       return (double) Spravne_odpovedi / (Celkove_odpovedi * 100);
+    }
+
+    public void smazatStatistiku(){
+        Celkove_odpovedi = 0;
+        Spravne_odpovedi = 0;
+        Spatne_odpovedi = 0;
+        POCET_ZKOUSENI = 0;
     }
 
     public Double getCELKOVY_CAS() {
