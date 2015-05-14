@@ -24,8 +24,8 @@ class Slovicka {
     private final Dialogy dialog = new Dialogy();
 
     // zavedeni databazi na ceske a anglicke slovicka
-    private ArrayList<String> cesky = new ArrayList<>();
-    private ArrayList<String> anglicky = new ArrayList<>();
+    private final ArrayList<String> cesky = new ArrayList<>();
+    private final ArrayList<String> anglicky = new ArrayList<>();
 
     // funkce na import slovicek do databazi
     public void slova(){

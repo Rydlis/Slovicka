@@ -41,8 +41,6 @@ public class Controller implements Initializable{
     @FXML
     private GridPane zkouseni_div;
     @FXML
-    private GridPane tlacitka_div;
-    @FXML
     private ImageView ceska_vlajka;
     @FXML
     private ImageView anglicka_vlajka;
@@ -68,7 +66,7 @@ public class Controller implements Initializable{
     private TextField input_slovo;
 
     // zavedeni promennych
-    private ObservableList<String> list = FXCollections.observableArrayList();
+    private final ObservableList<String> list = FXCollections.observableArrayList();
     private int opakovani;
     private int pocet_opak = 0;
 
@@ -87,7 +85,7 @@ public class Controller implements Initializable{
         pocet_slov_slider.setMin(0);
         pocet_slov_slider.setMax(0);
         pocet_slov_slider.setValue(0);
-        // novy handler pro seekbar, predelan do levelu 8 lambda
+        // novy listener pro seekbar, predelan do levelu 8 lambda
         pocet_slov_slider.valueProperty().addListener((observable, oldValue, newValue) -> {
             pocet_slov.setText(String.valueOf(newValue.intValue()));
             opakovani = newValue.intValue();
@@ -133,11 +131,11 @@ public class Controller implements Initializable{
         tab3.setDisable(true);
         menu.setDisable(true);
         if ((chk_cesky.isSelected()) && (chk_anglicky.isSelected())){           // jestli jsou zvolene 2 jazyky tak se start prerusi a vrati do nastaveni a objevi se dialog s upozornenim
-            handleUkoncitTest();
             dialogy.Error("Chyba", "Zvolte pouze jeden jazyk");
-        } else if ((!chk_cesky.isSelected()) && (!chk_anglicky.isSelected())){   // jestli neni zvolen zadny jazyk, start se presrusi a objevi se dialog s upozornenim
             handleUkoncitTest();
+        } else if ((!chk_cesky.isSelected()) && (!chk_anglicky.isSelected())){   // jestli neni zvolen zadny jazyk, start se presrusi a objevi se dialog s upozornenim
             dialogy.Error("Chyba", "Zvolte alespon jeden jazyk");
+            handleUkoncitTest();
         }
         else {
             test();
@@ -148,6 +146,7 @@ public class Controller implements Initializable{
     // mezitim tato funkce losuje slovicka z vybraneho jazyka a zobrazuje je v Labelu
     private void test(){
         if (opakovani > pocet_opak){
+            input_slovo.requestFocus();                                   // pri startu testu automaticky aktivuje TextField pro vyplneni
             int vylosovany_index = new Random().nextInt(slovicka.getCesky().size() - 1);
             if (chk_cesky.isSelected()) {
                 slovo.setText(slovicka.getCesky().get(vylosovany_index)); // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
@@ -158,7 +157,6 @@ public class Controller implements Initializable{
             sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
             spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
             celk_odpoved.setText(String.valueOf(statistika.getCelkove_odpovedi()));
-            System.out.println(statistika.vypocetStatistiky());
             uspesnost.setText(String.valueOf(statistika.vypocetStatistiky()));
             statistika.setPOCET_ZKOUSENI(statistika.getPOCET_ZKOUSENI() +1);
             handleUkoncitTest();
@@ -199,7 +197,6 @@ public class Controller implements Initializable{
     // funkce na ukonceni testu a vraceni se do nastaveni, opet umozni ovladat program pomoci Tabs a Menu a taky vraci hodnoty do vychozi hodnoty
     public void handleUkoncitTest(){
         fadeIn(nastaveni_div);
-        nastaveni_div.setDisable(false);
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);
         tab1.setDisable(false);
@@ -208,9 +205,13 @@ public class Controller implements Initializable{
         pocet_opak = 0;
     }
 
-    // funkce na volani vymazani statistiky, volana funkce se nachazi ve tride STatistika
+    // funkce na volani vymazani statistiky, volana funkce se nachazi ve tride Statistika
     public void handleVymazatStatistiku(){
         statistika.smazatStatistiku();
+        spat_odpoved.setText("0");
+        sprav_odpoved.setText("0");
+        celk_odpoved.setText("0");
+        uspesnost.setText("0");
     }
 
     // funkce na FadeIn animaci, kdy se teto funkci posle Nod na ktery ma byt animace navazana
@@ -236,8 +237,15 @@ public class Controller implements Initializable{
                 "Verze aplikace Beta 1, rok 2015");
     }
 
-    // funkce pro ukončení aplikace, pred ukoncenim vola exportDat() pro ulozeni statistiky do textoveho souboru
+    // funkce pro ukončení aplikace, vyhodi potvrzovaci dialog a pokud se rovná "OK", exportuje data do externi databaze
+    // a potom ukončí aplikaci
     public void handleExit (){
-        System.exit(0);
+        ButtonType volba = dialogy.Confirm("Ukončit", "Opravdu chete ukončit aplikaci?\n" +
+                "Pozn. Pred ukoncenim se automaticky vyexportuje databaze do souboru,\n" +
+                "poté ji můžete při dalším spuštením importovat přes menu").get();
+        if (volba == ButtonType.OK){
+            statistika.exportDat();
+            System.exit(0);
+        }
     }
 }

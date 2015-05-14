@@ -13,16 +13,17 @@ class Statistika {
     private int Spravne_odpovedi;
     private int Spatne_odpovedi;
     private int Celkove_odpovedi;
+    private String cesta_db;
 
     public void importDat(){
     }
 
     public void exportDat(){
-
+        System.out.println("Export dat");
     }
 
     public double vypocetStatistiky(){
-       return (double) Spravne_odpovedi / (Celkove_odpovedi * 100);
+       return (double) (Spravne_odpovedi / Celkove_odpovedi) * 100;
     }
 
     public void smazatStatistiku(){

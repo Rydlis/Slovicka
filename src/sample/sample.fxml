@@ -36,7 +36,7 @@
                             <RowConstraints maxHeight="159.0" minHeight="0.0" prefHeight="97.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="slovo" text="Label" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <Label fx:id="slovo" alignment="CENTER" prefHeight="95.0" prefWidth="523.0" text="Nedef" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
                                     <Font size="80.0" />
                                  </font>
@@ -76,9 +76,12 @@
                               <ImageView fx:id="anglicka_vlajka" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
                               <Label text="Zvoleno: " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                               <Label fx:id="pocet_slov" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <RadioButton fx:id="chk_cesky" mnemonicParsing="false" text="Cesky" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                              <RadioButton fx:id="chk_cesky" mnemonicParsing="false" text="Cesky" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="prd" />
+                                 </toggleGroup></RadioButton>
                               <Button mnemonicParsing="false" onAction="#handleStartTest" prefHeight="38.0" prefWidth="67.0" text="Začít" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                              <RadioButton fx:id="chk_anglicky" mnemonicParsing="false" text="Anglicky" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                              <RadioButton fx:id="chk_anglicky" mnemonicParsing="false" text="Anglicky" toggleGroup="$prd" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
                      </children></AnchorPane>
