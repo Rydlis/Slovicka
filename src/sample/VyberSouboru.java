@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 
@@ -17,6 +16,6 @@ class VyberSouboru {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Excel", "*.xls")
         );
-        return fileChooser.showOpenDialog(new Stage());
+        return fileChooser.showOpenDialog(null);
     }
 }

@@ -57,6 +57,10 @@ public class Controller implements Initializable{
     @FXML
     private Label uspesnost;
     @FXML
+    private Label cas;
+    @FXML
+    private Label pocet_zkouseni;
+    @FXML
     private RadioButton chk_cesky;
     @FXML
     private RadioButton chk_anglicky;
@@ -69,6 +73,7 @@ public class Controller implements Initializable{
     private final ObservableList<String> list = FXCollections.observableArrayList();
     private int opakovani;
     private int pocet_opak = 0;
+    private Boolean probehlImport = false;
 
     // zavedeni knihoven
     private final Slovicka slovicka = new Slovicka();
@@ -78,6 +83,9 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // import slovicek
+        statistika.importDat();
+        // nastaveni obrazku
         ceska_vlajka.setImage(new Image(getClass().getResource("czech.jpg").toExternalForm()));
         anglicka_vlajka.setImage(new Image(getClass().getResource("uk.jpg").toExternalForm()));
         // prvotni nastaveni seekbaru po kazdem spusteni aplikace
@@ -90,6 +98,7 @@ public class Controller implements Initializable{
             pocet_slov.setText(String.valueOf(newValue.intValue()));
             opakovani = newValue.intValue();
         });
+        // novy handler, kdyz input_slovo.isFocused() = true, stisknuta klavesa ENTER zavola funkci handleDalsi(), at uzivatel nemusi klikat na tlacitko "Dalsi"
         input_slovo.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -100,6 +109,7 @@ public class Controller implements Initializable{
         });
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);
+        cas.setText(statistika.celkovy_cas());
     }
 
     // ne zcela pekna funkce na import slovicek a jejich vykresleni do ListView
@@ -113,10 +123,13 @@ public class Controller implements Initializable{
             listView.setItems(list);
             pocet_slov_slider.setMax(slovicka.getCesky().size());   // nastaveni maximalni hodnoty na slideru
             dialogy.Info("Info", "Slovíčka byla naimportována");
+            probehlImport = true;
         } catch (IndexOutOfBoundsException e){                      // zpracovani vyjimky kdy je index vetsi jak pole
             dialogy.Error("Chyba", "Při výkonu akce došlo k chybě");
+            probehlImport = false;
         } catch (NullPointerException e){                           // soubor nenalezen nebo uzivatel zadny nezvolil
             dialogy.Error("Chyba", "Soubor nevybrán");
+            probehlImport = false;
         }
     }
 
@@ -124,53 +137,52 @@ public class Controller implements Initializable{
     // pri startu funkce se taky znemozni kliknout na jiny Tab a ovladat menu dokud se nezavola handleUkocitTest();
     // pri stisku tlacitka "Ukoncit"
     public void handleStartTest(){
-        nastaveni_div.setDisable(true);
-        nastaveni_div.setOpacity(0);
-        fadeIn(zkouseni_div);
-        tab1.setDisable(true);
-        tab3.setDisable(true);
-        menu.setDisable(true);
-        if ((chk_cesky.isSelected()) && (chk_anglicky.isSelected())){           // jestli jsou zvolene 2 jazyky tak se start prerusi a vrati do nastaveni a objevi se dialog s upozornenim
-            dialogy.Error("Chyba", "Zvolte pouze jeden jazyk");
+        if (!probehlImport) {                                           // osetreni neprecteni manualu, ktery rika ze nejdrive musite naimportovat slovicka
+            dialogy.Error("Chyba", "Nejdrive importuj slovicka");
             handleUkoncitTest();
-        } else if ((!chk_cesky.isSelected()) && (!chk_anglicky.isSelected())){   // jestli neni zvolen zadny jazyk, start se presrusi a objevi se dialog s upozornenim
-            dialogy.Error("Chyba", "Zvolte alespon jeden jazyk");
-            handleUkoncitTest();
-        }
-        else {
-            test();
+        } else {
+            statistika.setZacatecni_cas(System.currentTimeMillis());
+            nastaveni_div.setDisable(true);
+            nastaveni_div.setOpacity(0);
+            fadeIn(zkouseni_div);
+            tab1.setDisable(true);
+            tab3.setDisable(true);
+            menu.setDisable(true);
+            test();                                                     // spusteni testu
         }
     }
 
     // funkce na ovladani testu, tato funkce po vyplneni zavola funkci kontrola()
     // mezitim tato funkce losuje slovicka z vybraneho jazyka a zobrazuje je v Labelu
     private void test(){
-        if (opakovani > pocet_opak){
-            input_slovo.requestFocus();                                   // pri startu testu automaticky aktivuje TextField pro vyplneni
-            int vylosovany_index = new Random().nextInt(slovicka.getCesky().size() - 1);
-            if (chk_cesky.isSelected()) {
-                slovo.setText(slovicka.getCesky().get(vylosovany_index)); // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
+            if (opakovani > pocet_opak) {
+                input_slovo.requestFocus();                                                     // pri startu testu automaticky aktivuje TextField pro vyplneni
+                int vylosovany_index = new Random().nextInt(slovicka.getCesky().size() - 1);
+                if (chk_cesky.isSelected()) {
+                    slovo.setText(slovicka.getCesky().get(vylosovany_index));                   // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
+                } else {
+                    slovo.setText(slovicka.getAnglicky().get(vylosovany_index));                // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
+                }
             } else {
-                slovo.setText(slovicka.getAnglicky().get(vylosovany_index)); // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
+                sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
+                spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
+                celk_odpoved.setText(String.valueOf(statistika.getCelkove_odpovedi()));
+                uspesnost.setText(String.valueOf(statistika.vypocetStatistiky()));
+                statistika.setPOCET_ZKOUSENI(statistika.getPOCET_ZKOUSENI() + 1);
+                pocet_zkouseni.setText(String.valueOf(statistika.getPOCET_ZKOUSENI()));
+                handleUkoncitTest();
             }
-        } else {
-            sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
-            spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
-            celk_odpoved.setText(String.valueOf(statistika.getCelkove_odpovedi()));
-            uspesnost.setText(String.valueOf(statistika.vypocetStatistiky()));
-            statistika.setPOCET_ZKOUSENI(statistika.getPOCET_ZKOUSENI() +1);
-            handleUkoncitTest();
-        }
     }
 
     // fuknce na kontrolu spravnosti odpovedi, kdy se teto fuknci posle zodpovezene slovicko a na zaklade spravnosti
     // se pricte spravna odpoved do statistiky
     public void handleDalsi(){
         if (chk_cesky.isSelected()){
-            if (slovicka.getAnglicky().contains(input_slovo.getText())){
-                statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);
+            if (slovicka.getAnglicky().contains(input_slovo.getText())){                            // jestli databaze ang. slovícek obsahuje to, co bylo zadano do inputu
+                statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);                // pricteni spravne odpovedi
             } else {
-                statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() + 1);
+                statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() + 1);                 // pricteni spatne odpovedi
+                dialogy.Error("Ouha", "Chyba, nevadi, zkus to u dalsiho");
             }
         }
         else if (chk_anglicky.isSelected()){
@@ -178,15 +190,16 @@ public class Controller implements Initializable{
                 statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);
             } else {
                 statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() +1);
+                dialogy.Error("Ouha", "Chyba, nevadi, zkus to u dalsiho");
             }
         }
-        input_slovo.clear();
-        statistika.setCelkove_odpovedi(statistika.getCelkove_odpovedi() +1);
-        pocet_opak++;
-        test();
+        input_slovo.clear();                                                                        // vycisteni TextFieldu
+        statistika.setCelkove_odpovedi(statistika.getCelkove_odpovedi() +1);                        // inkrementace celkovych odpovedi
+        pocet_opak++;                                                                               // inkrementace pocet_opak, slouzi k urceni poctu opakovani
+        test();                                                                                     // volani fce test()
     }
 
-    // funkce pro predbezne ukonceni s potvrzujicim dialogem
+    // funkce pro predbezne ukonceni testu s potvrzujicim dialogem
     public void handlePredbezneUkoncit() {
         ButtonType volba = dialogy.Confirm("Potvrďte", "Opravdu chcete ukončit testování?").get();
         if (volba == ButtonType.OK){
@@ -196,6 +209,8 @@ public class Controller implements Initializable{
 
     // funkce na ukonceni testu a vraceni se do nastaveni, opet umozni ovladat program pomoci Tabs a Menu a taky vraci hodnoty do vychozi hodnoty
     public void handleUkoncitTest(){
+        statistika.setKonecny_cas(System.currentTimeMillis());
+        statistika.setPOCET_ZKOUSENI(statistika.getPOCET_ZKOUSENI() +1);
         fadeIn(nastaveni_div);
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);
@@ -203,6 +218,11 @@ public class Controller implements Initializable{
         tab3.setDisable(false);
         menu.setDisable(false);
         pocet_opak = 0;
+        cas.setText(statistika.celkovy_cas());
+        // takovy ten pocit ze je blbe posilat "uspesne jste dokoncily test" kdyz jste nenaimportovali slovicka a z toho duvodu vam to zakazalo spustit test
+        if (probehlImport) {
+            dialogy.Info("Test", "Uspesne jste dokoncily test");
+        }
     }
 
     // funkce na volani vymazani statistiky, volana funkce se nachazi ve tride Statistika
@@ -212,6 +232,8 @@ public class Controller implements Initializable{
         sprav_odpoved.setText("0");
         celk_odpoved.setText("0");
         uspesnost.setText("0");
+        cas.setText("0");
+        dialogy.Info("Statistika", "Statistika byla uspesne vymazana");
     }
 
     // funkce na FadeIn animaci, kdy se teto funkci posle Nod na ktery ma byt animace navazana
@@ -233,7 +255,6 @@ public class Controller implements Initializable{
     // vyhodi dialog s informacemi o aplikaci
     public void handleOAppce(){
         dialogy.Info("Info o aplikace", "Tuto aplikaci naprogramoval David Rejdl\n" +
-                "Více informací na www.github.com/Rydlis\n" +
                 "Verze aplikace Beta 1, rok 2015");
     }
 

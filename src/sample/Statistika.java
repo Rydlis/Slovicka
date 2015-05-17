@@ -1,29 +1,49 @@
 package sample;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by david on 2.4.15.
  * TODO export a import statistiky
  */
 class Statistika {
 
-    private Double CELKOVY_CAS;
-    private Double zacatecni_cas;
-    private Double konecny_cas;
+    private long CELKOVY_CAS;
+    private long zacatecni_cas;
+    private long konecny_cas;
     private int POCET_ZKOUSENI;
     private int Spravne_odpovedi;
     private int Spatne_odpovedi;
     private int Celkove_odpovedi;
     private String cesta_db;
 
+    XMLCteniZapis xml = new XMLCteniZapis();
+    Dialogy dialog = new Dialogy();
+
+    double Uspesnost = 0;
+
     public void importDat(){
+        System.out.println("import dat");
     }
 
+
     public void exportDat(){
-        System.out.println("Export dat");
+        xml.data(Spravne_odpovedi, Spatne_odpovedi, Celkove_odpovedi, Uspesnost, CELKOVY_CAS, POCET_ZKOUSENI);
     }
 
     public double vypocetStatistiky(){
-       return (double) (Spravne_odpovedi / Celkove_odpovedi) * 100;
+        try {
+            Uspesnost =  (Spravne_odpovedi / Celkove_odpovedi) * 100;
+        } catch (ArithmeticException e) {
+            System.out.println("Bohuzel nezijeme ve vesmiru kde lze delit nulou, bojim se ze v souboru bude Uspesnot jako Null, nebo 0");
+        }
+        return Uspesnost;
+    }
+
+    public String celkovy_cas(){
+        SimpleDateFormat smf = new SimpleDateFormat("m:ss");
+        CELKOVY_CAS = CELKOVY_CAS + (konecny_cas - zacatecni_cas);
+        return smf.format(CELKOVY_CAS);
     }
 
     public void smazatStatistiku(){
@@ -33,27 +53,27 @@ class Statistika {
         POCET_ZKOUSENI = 0;
     }
 
-    public Double getCELKOVY_CAS() {
+    public long getCELKOVY_CAS() {
         return CELKOVY_CAS;
     }
 
-    public void setCELKOVY_CAS(Double CELKOVY_CAS) {
+    public void setCELKOVY_CAS(long CELKOVY_CAS) {
         this.CELKOVY_CAS = CELKOVY_CAS;
     }
 
-    public Double getZacatecni_cas() {
+    public long getZacatecni_cas() {
         return zacatecni_cas;
     }
 
-    public void setZacatecni_cas(Double zacatecni_cas) {
+    public void setZacatecni_cas(long zacatecni_cas) {
         this.zacatecni_cas = zacatecni_cas;
     }
 
-    public Double getKonecny_cas() {
+    public long getKonecny_cas() {
         return konecny_cas;
     }
 
-    public void setKonecny_cas(Double konecny_cas) {
+    public void setKonecny_cas(long konecny_cas) {
         this.konecny_cas = konecny_cas;
     }
 
