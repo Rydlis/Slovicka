@@ -13,7 +13,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="listView" layoutX="14.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="660.0" prefWidth="1252.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                        <ListView fx:id="listView" layoutX="14.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="660.0" prefWidth="1252.0" style="-fx-font: 12px &quot;Consolas&quot;;" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets></ListView>
@@ -78,10 +78,10 @@
                               <Label fx:id="pocet_slov" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <RadioButton fx:id="chk_cesky" mnemonicParsing="false" text="Cesky" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                                  <toggleGroup>
-                                    <ToggleGroup fx:id="prd" />
+                                    <ToggleGroup fx:id="radio_buttons" />
                                  </toggleGroup></RadioButton>
                               <Button mnemonicParsing="false" onAction="#handleStartTest" prefHeight="38.0" prefWidth="67.0" text="Začít" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-                              <RadioButton fx:id="chk_anglicky" mnemonicParsing="false" text="Anglicky" toggleGroup="$prd" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+                              <RadioButton fx:id="chk_anglicky" mnemonicParsing="false" text="Anglicky" toggleGroup="$radio_buttons" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                            </children>
                         </GridPane>
                      </children></AnchorPane>

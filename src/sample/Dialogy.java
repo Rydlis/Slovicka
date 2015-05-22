@@ -1,7 +1,7 @@
 /**
  * Vytvořeno David Rejdlem za ucelem zprehledneni kodu
  * Tato trida byla použita u více projektu a rad bych ji i zverejnil jako API
- * TODO predelat na podporu javy 7
+ * TODO predelat na podporu javy 7, predelat na dialogy.jar a pak jenom importovat do projektu
  * navic, komu by se to chtelo porad psat
  * Tato trida bylo optimalizovana pomoci IntelliJ Idea Analyzator
  * trida je package-local, proto chybi "public" pred "class"
@@ -31,6 +31,13 @@ class Dialogy {
         alert.setTitle(nadpis);                // nastaveni nadpisu
         alert.setHeaderText(popis);                // nastaveni popisu chyby
         alert.showAndWait();                        // zobrazeni dialogu s nasim textem
+    }
+
+    public void Dialog (String popis, String obsah){
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(popis);
+        alert.setContentText(obsah);
+        alert.showAndWait();
     }
 
     // funkce na potvrzovaci dialog

@@ -3,6 +3,8 @@
  *
  * Tahle trida slouzi pro obsluhu celeho programu a zaroven slouzi jako obsluha testu
  * Probiha zde samotny test, kontrola a posilani vysledku tride Statistika
+ *
+ * TODO dodelat vyhledavani slovicka
  */
 package sample;
 
@@ -18,6 +20,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -85,6 +89,11 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         // import slovicek
         statistika.importDat();
+        sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
+        spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
+        celk_odpoved.setText(String.valueOf(statistika.getCelkove_odpovedi()));
+        uspesnost.setText(String.valueOf(statistika.getUspesnost()) + "%");
+        cas.setText(String.valueOf(statistika.getCELKOVY_CAS()));
         // nastaveni obrazku
         ceska_vlajka.setImage(new Image(getClass().getResource("czech.jpg").toExternalForm()));
         anglicka_vlajka.setImage(new Image(getClass().getResource("uk.jpg").toExternalForm()));
@@ -98,12 +107,26 @@ public class Controller implements Initializable{
             pocet_slov.setText(String.valueOf(newValue.intValue()));
             opakovani = newValue.intValue();
         });
-        // novy handler, kdyz input_slovo.isFocused() = true, stisknuta klavesa ENTER zavola funkci handleDalsi(), at uzivatel nemusi klikat na tlacitko "Dalsi"
+        // novy handler, je aktivni input_slovo stisknuta klavesa ENTER zavola funkci handleDalsi(), at uzivatel nemusi klikat na tlacitko "Dalsi"
         input_slovo.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER){
                     handleDalsi();
+                }
+            }
+        });
+        // novy handler pro zachazeni s dvojklikem na listview
+        listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {                           //odposlech "double-clicku"
+                    if (mouseEvent.getClickCount() == 2) {                                          // jestli se 2x stisklo vychozi tlacitko, vykonec tuto akci
+                        // funkce na zobrazeni prekladu slovicka po dvojkliku na zvolene slovicko
+                        String cesky = slovicka.getCesky().get(listView.getSelectionModel().getSelectedIndex());
+                        String anglicky = "Anglicky prelozeno jako: " + slovicka.getAnglicky().get(listView.getSelectionModel().getSelectedIndex());
+                        dialogy.Dialog(cesky, anglicky);
+                    }
                 }
             }
         });
@@ -167,7 +190,7 @@ public class Controller implements Initializable{
                 sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
                 spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
                 celk_odpoved.setText(String.valueOf(statistika.getCelkove_odpovedi()));
-                uspesnost.setText(String.valueOf(statistika.vypocetStatistiky()));
+                uspesnost.setText(String.valueOf(statistika.vypocetUspesnosti()) + "%");
                 statistika.setPOCET_ZKOUSENI(statistika.getPOCET_ZKOUSENI() + 1);
                 pocet_zkouseni.setText(String.valueOf(statistika.getPOCET_ZKOUSENI()));
                 handleUkoncitTest();
@@ -231,7 +254,7 @@ public class Controller implements Initializable{
         spat_odpoved.setText("0");
         sprav_odpoved.setText("0");
         celk_odpoved.setText("0");
-        uspesnost.setText("0");
+        uspesnost.setText("0%");
         cas.setText("0");
         dialogy.Info("Statistika", "Statistika byla uspesne vymazana");
     }

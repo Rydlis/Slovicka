@@ -30,7 +30,7 @@ class Slovicka {
     // funkce na import slovicek do databazi
     public void slova(){
         try {
-            Workbook workbook = Workbook.getWorkbook(vyberSouboru.vyber());
+            Workbook workbook = Workbook.getWorkbook(vyberSouboru.vyber());      // vyber souboru pres tridu VyberSouboru
             Sheet sheet = workbook.getSheet(0);
             for(int j = 0; j < sheet.getColumns(); ++j) {
                 for(int i = 0; i < sheet.getRows(); ++i) {
@@ -49,7 +49,7 @@ class Slovicka {
         }
     }
 
-    // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho slova, prida k nemu 50 - delka_cesky mezeru a potom prida anglicke slovo
+    // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho slova, prida k nemu (50 - delka_cesky) mezeru a potom prida anglicke slovo
     public String parser(int i){
         StringBuilder stringBuffer = new StringBuilder();
         for(int j = 0; j < (50 - cesky.get(i).length()); ++j) {
