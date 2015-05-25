@@ -45,6 +45,7 @@ class Statistika {
 
     // funkce na export dat za pouziti FileWriter
     public void exportDat(){
+        System.out.println("blablabla");
         String zapis ="";
         zapis = zapis + Spravne_odpovedi + "\n";
         zapis = zapis + Spatne_odpovedi + "\n";

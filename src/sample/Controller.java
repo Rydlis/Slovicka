@@ -85,9 +85,11 @@ public class Controller implements Initializable{
     private final Statistika statistika = new Statistika();
     private final FadeTransition fadeTransition = new FadeTransition();
 
+    private int vylosovany_index;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // import slovicek
+        // import dat
         statistika.importDat();
         sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
         spat_odpoved.setText(String.valueOf(statistika.getSpatne_odpovedi()));
@@ -123,8 +125,8 @@ public class Controller implements Initializable{
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {                           //odposlech "double-clicku"
                     if (mouseEvent.getClickCount() == 2) {                                          // jestli se 2x stisklo vychozi tlacitko, vykonec tuto akci
                         // funkce na zobrazeni prekladu slovicka po dvojkliku na zvolene slovicko
-                        String cesky = slovicka.getCesky().get(listView.getSelectionModel().getSelectedIndex());
-                        String anglicky = "Anglicky prelozeno jako: " + slovicka.getAnglicky().get(listView.getSelectionModel().getSelectedIndex());
+                        String cesky = slovicka.getJazyk1().get(listView.getSelectionModel().getSelectedIndex());
+                        String anglicky = "Anglicky prelozeno jako: " + slovicka.getJazyk2().get(listView.getSelectionModel().getSelectedIndex());
                         dialogy.Dialog(cesky, anglicky);
                     }
                 }
@@ -138,14 +140,14 @@ public class Controller implements Initializable{
     // ne zcela pekna funkce na import slovicek a jejich vykresleni do ListView
     public void handleImport() {
         try {
-            slovicka.slova();
-            int pocet_slov_db = slovicka.getCesky().size() -1;      // takovy nepekny hack toho, ze index je 0->88 a delka je 1-89, proto se odecita jednicka
+            slovicka.import_rozhodnuti();
+            int pocet_slov_db = slovicka.getJazyk1().size() -1;      // takovy nepekny hack toho, ze index je 0->88 a delka je 1-89, proto se odecita jednicka
             for (int i = 0; i <= pocet_slov_db; ++i){
                 list.add(slovicka.parser(i));                       // pridani slovicek do databaze typu ObservableList pro tisknuti do listView
             }
             listView.setItems(list);
-            pocet_slov_slider.setMax(slovicka.getCesky().size());   // nastaveni maximalni hodnoty na slideru
-            dialogy.Info("Info", "Slovíčka byla naimportována");
+            pocet_slov_slider.setMax(slovicka.getJazyk1().size());   // nastaveni maximalni hodnoty na slideru
+            // dialogy.Info("Info", "Slovíčka byla naimportována");
             probehlImport = true;
         } catch (IndexOutOfBoundsException e){                      // zpracovani vyjimky kdy je index vetsi jak pole
             dialogy.Error("Chyba", "Při výkonu akce došlo k chybě");
@@ -180,11 +182,11 @@ public class Controller implements Initializable{
     private void test(){
             if (opakovani > pocet_opak) {
                 input_slovo.requestFocus();                                                     // pri startu testu automaticky aktivuje TextField pro vyplneni
-                int vylosovany_index = new Random().nextInt(slovicka.getCesky().size() - 1);
+                vylosovany_index = new Random().nextInt(slovicka.getJazyk1().size() - 1);
                 if (chk_cesky.isSelected()) {
-                    slovo.setText(slovicka.getCesky().get(vylosovany_index));                   // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
+                    slovo.setText(slovicka.getJazyk1().get(vylosovany_index));                   // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
                 } else {
-                    slovo.setText(slovicka.getAnglicky().get(vylosovany_index));                // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
+                    slovo.setText(slovicka.getJazyk2().get(vylosovany_index));                // gettovani slovicka na indexu "nahodne vybranem" ze zacatku funkce
                 }
             } else {
                 sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
@@ -201,19 +203,21 @@ public class Controller implements Initializable{
     // se pricte spravna odpoved do statistiky
     public void handleDalsi(){
         if (chk_cesky.isSelected()){
-            if (slovicka.getAnglicky().contains(input_slovo.getText())){                            // jestli databaze ang. slovícek obsahuje to, co bylo zadano do inputu
+            if (slovicka.getJazyk2().contains(input_slovo.getText())){                            // jestli databaze ang. slovícek obsahuje to, co bylo zadano do inputu
                 statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);                // pricteni spravne odpovedi
             } else {
                 statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() + 1);                 // pricteni spatne odpovedi
-                dialogy.Error("Ouha", "Chyba, nevadi, zkus to u dalsiho");
+                String spravna_odpoved = "Spravne se zadane slovo prelozi jako: " + slovicka.getJazyk2().get(vylosovany_index);
+                dialogy.Dialog("Ouha", spravna_odpoved);
             }
         }
         else if (chk_anglicky.isSelected()){
-            if (slovicka.getCesky().contains(input_slovo.getText())){
+            if (slovicka.getJazyk1().contains(input_slovo.getText())){
                 statistika.setSpravne_odpovedi(statistika.getSpravne_odpovedi() +1);
             } else {
                 statistika.setSpatne_odpovedi(statistika.getSpatne_odpovedi() +1);
-                dialogy.Error("Ouha", "Chyba, nevadi, zkus to u dalsiho");
+                String spravna_odpoved = "Spravne se zadane slovo prelozi jako: " + slovicka.getJazyk1().get(vylosovany_index);
+                dialogy.Dialog("Ouha", spravna_odpoved);
             }
         }
         input_slovo.clear();                                                                        // vycisteni TextFieldu

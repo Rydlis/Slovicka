@@ -1,10 +1,12 @@
 /**
  * Jenom Bůh ví co se v této třídě doopravdy děje, ale dal mi dar prozření a tak se to pokusím vysvětlit
  * tato třída importuje ceske a anglicke slovicka ze souboru který ji byl přidělen.
- * Děje se tak za pomoci funkce "slova()", která nic nevrací, pouze vyhazuje vyjimky
+ * Děje se tak za pomoci funkce "import_sVyslovnosti()", která nic nevrací, pouze vyhazuje vyjimky
  * Dále je tu parser který dělá to, že vezme české slovicko, spočítá jeho délku a od 50 prazdych mist odecte vysledek,
  * a vysledek je pocet prazdych znaku ktere se dosadi za ceske slovicko, za tohle vsechno se dosadí anglické slovíčko
  * tato trida je package-local
+ *
+ * TODO dodelat import slovicek, zjistit de se sekne, osetrit proti chybam
  * */
 package sample;
 
@@ -22,48 +24,101 @@ class Slovicka {
     // zavedeni potrebnych trid
     private final VyberSouboru vyberSouboru = new VyberSouboru();
     private final Dialogy dialog = new Dialogy();
+    private Workbook workbook;
 
     // zavedeni databazi na ceske a anglicke slovicka
-    private final ArrayList<String> cesky = new ArrayList<>();
-    private final ArrayList<String> anglicky = new ArrayList<>();
+    private final ArrayList<String> jazyk1 = new ArrayList<>();
+    private final ArrayList<String> jazyk2 = new ArrayList<>();
+    private final ArrayList<String> vyslovnost = new ArrayList<>();
 
-    // funkce na import slovicek do databazi
-    public void slova(){
+    String prvniJazyk;
+    String druhyJazyk;
+
+    // funkce na rozhodnuti mezi importem s vyslovnosti nebo bez
+    public void import_rozhodnuti(){
         try {
-            Workbook workbook = Workbook.getWorkbook(vyberSouboru.vyber());      // vyber souboru pres tridu VyberSouboru
+            workbook = Workbook.getWorkbook(vyberSouboru.vyber());
             Sheet sheet = workbook.getSheet(0);
-            for(int j = 0; j < sheet.getColumns(); ++j) {
-                for(int i = 0; i < sheet.getRows(); ++i) {
-                    Cell cell = sheet.getCell(j, i);
-                    if(j == 0) {
-                        cesky.add(cell.getContents());
-                    } else if(j == 1) {
-                        anglicky.add(cell.getContents());
-                    }
+            prvniJazyk = sheet.getCell(0, 0).getContents();
+            druhyJazyk = sheet.getCell(1, 0).getContents();
+            String jeVyslovnost = sheet.getCell(2, 0).getContents();
+            System.out.println(jeVyslovnost);
+            if (jeVyslovnost != null){
+                switch (jeVyslovnost) {
+                    case "false":
+                        import_bezVyslovnosti();
+                        break;
+                    case "true":
+                        import_sVyslovnosti();
+                        break;
+                    default:
+                        dialog.Error("Chyba", "Soubor neodpovida novemu formatu");
+                        break;
                 }
             }
         } catch (IOException e) {
-            dialog.Error("Chyba", "Soubor nemohl být otevřen");
+            e.printStackTrace();
         } catch (BiffException e) {
-            System.out.println("Neco se pokazilo behem zapisu do databaze");
+            e.printStackTrace();
+        }
+
+    }
+
+    // funkce na import slovicek bez vyslovnosti
+    public void import_bezVyslovnosti(){
+        try {
+            Sheet sheet = workbook.getSheet(0);
+            for(int j = 0; j < sheet.getColumns(); ++j) {
+                for(int i = 1; i < sheet.getRows(); ++i) {
+                    Cell cell = sheet.getCell(j, i);
+                    if(j == 0) {
+                        jazyk1.add(cell.getContents());
+                    } else if(j == 1) {
+                        jazyk2.add(cell.getContents());
+                    }
+                }
+            }
+        } catch (Exception e){
+            System.out.println("Neo se nehorazne pokazilo");
         }
     }
 
-    // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho slova, prida k nemu (50 - delka_cesky) mezeru a potom prida anglicke slovo
+    // funkce na import slovicek i s obsazenou vyslovnosti
+    public void import_sVyslovnosti(){
+        try {
+            Sheet sheet = workbook.getSheet(0);
+            for(int j = 0; j < sheet.getColumns(); ++j) {
+                for(int i = 1; i < sheet.getRows(); ++i) {
+                    Cell cell = sheet.getCell(j, i);
+                    if(j == 0) {
+                        jazyk1.add(cell.getContents());
+                    } else if(j == 1) {
+                        jazyk2.add(cell.getContents());
+                    } else if (j == 2){
+                        vyslovnost.add(cell.getContents());
+                    }
+                }
+            }
+        } catch (Exception e){
+            System.out.println("Neo se nehorazne pokazilo");
+        }
+    }
+
+    // funkce pro vytvoření dvojic slovicek do listView, vezme delku ceskeho import_sVyslovnosti, prida k nemu (50 - delka_cesky) mezeru a potom prida anglicke slovo
     public String parser(int i){
         StringBuilder stringBuffer = new StringBuilder();
-        for(int j = 0; j < (50 - cesky.get(i).length()); ++j) {
+        for(int j = 0; j < (50 - jazyk1.get(i).length()); ++j) {
             stringBuffer.append(" ");
         }
-        return cesky.get(i) + stringBuffer + anglicky.get(i);
+        return jazyk1.get(i) + stringBuffer + jazyk2.get(i);
     }
 
-    public List<String> getCesky() {
-        return cesky;
+    public List<String> getJazyk1() {
+        return jazyk1;
     }
 
-    public List<String> getAnglicky() {
-        return anglicky;
+    public List<String> getJazyk2() {
+        return jazyk2;
     }
 
 }

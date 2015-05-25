@@ -22,14 +22,16 @@ class Dialogy {
     public void Error(String nadpis, String popis){
         alert.setTitle(nadpis);                // nastaveni nadpisu
         alert.setHeaderText(popis);                // nastaveni popisu chyby
+        alert.setContentText(null);                   // nastavi prazdnou hodnotu pro ContentText
         alert.showAndWait();                        // zobrazeni dialogu s nasim textem
     }
 
     // funkce na tisk alertu, nechtelo se mi psat dalsi 3 radky kodu ke kazdemu try/catch, navic tohle zprehlednuje kod
-    public void Info(String nadpis, String popis){
+    public void Info(String nadpis, String popis) {
         alert.setAlertType(Alert.AlertType.INFORMATION);
         alert.setTitle(nadpis);                // nastaveni nadpisu
         alert.setHeaderText(popis);                // nastaveni popisu chyby
+        alert.setContentText(null);                   // nastavi prazdnou hodnotu pro ContentText
         alert.showAndWait();                        // zobrazeni dialogu s nasim textem
     }
 
@@ -45,6 +47,7 @@ class Dialogy {
         alert.setAlertType(Alert.AlertType.CONFIRMATION);
         alert.setTitle(nadpis);
         alert.setHeaderText(dotaz);
+        alert.setContentText(null);
         return alert.showAndWait();
     }
 
