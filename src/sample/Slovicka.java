@@ -121,4 +121,8 @@ class Slovicka {
         return jazyk2;
     }
 
+    public ArrayList<String> getVyslovnost() {
+        return vyslovnost;
+    }
+
 }

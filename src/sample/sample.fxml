@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
@@ -13,10 +14,15 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="listView" layoutX="14.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="660.0" prefWidth="1252.0" style="-fx-font: 12px &quot;Consolas&quot;;" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                        <ListView fx:id="jazyk1listView" layoutX="14.0" layoutY="14.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="660.0" prefWidth="417.0" style="-fx-font: 12px &quot;Consolas&quot;;" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="50.0">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets></ListView>
+                        <ListView fx:id="jazyk2listView" layoutX="431.0" layoutY="14.0" prefHeight="200.0" prefWidth="417.0" AnchorPane.bottomAnchor="13.0" AnchorPane.topAnchor="50.0" />
+                        <ListView fx:id="vyslovnostListView" layoutX="848.0" layoutY="14.0" prefHeight="200.0" prefWidth="417.0" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0" />
+                        <Label layoutX="205.0" layoutY="21.0" text="Jazyk 1" />
+                        <Label layoutX="622.0" layoutY="21.0" text="Jazyk 2" />
+                        <Label layoutX="1039.0" layoutY="21.0" text="Vyslovnost" />
                      </children>
                   </AnchorPane>
             </content>
@@ -135,9 +141,15 @@
           <Menu mnemonicParsing="false" text="Nastavení">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import dat" />
-                  <MenuItem mnemonicParsing="false" text="Export statistiky" />
+                  <MenuItem mnemonicParsing="false" text="Export statistiky">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#handleVymazatStatistiku" text="Vymazat statistiku" />
-              <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Ukončit" />
+              <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Ukončit">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
             </items>
           </Menu>
         </menus>

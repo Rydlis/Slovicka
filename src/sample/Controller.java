@@ -4,7 +4,7 @@
  * Tahle trida slouzi pro obsluhu celeho programu a zaroven slouzi jako obsluha testu
  * Probiha zde samotny test, kontrola a posilani vysledku tride Statistika
  *
- * TODO dodelat vyhledavani slovicka
+ * TODO dodelat vyhledavani slovicka, predelat parser na podporu vice jazyku
  */
 package sample;
 
@@ -20,8 +20,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -39,7 +37,11 @@ public class Controller implements Initializable{
     @FXML
     private MenuBar menu;
     @FXML
-    private ListView<String> listView;
+    private ListView<String> jazyk1listView;
+    @FXML
+    private ListView<String> jazyk2listView;
+    @FXML
+    private ListView<String> vyslovnostListView;
     @FXML
     private GridPane nastaveni_div;
     @FXML
@@ -74,7 +76,9 @@ public class Controller implements Initializable{
     private TextField input_slovo;
 
     // zavedeni promennych
-    private final ObservableList<String> list = FXCollections.observableArrayList();
+    private final ObservableList<String> jazyk1list = FXCollections.observableArrayList();
+    private final ObservableList<String> jazyk2list = FXCollections.observableArrayList();
+    private final ObservableList<String> vyslovnostList = FXCollections.observableArrayList();
     private int opakovani;
     private int pocet_opak = 0;
     private Boolean probehlImport = false;
@@ -119,6 +123,7 @@ public class Controller implements Initializable{
             }
         });
         // novy handler pro zachazeni s dvojklikem na listview
+        /*
         listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -132,6 +137,7 @@ public class Controller implements Initializable{
                 }
             }
         });
+        */
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);
         cas.setText(statistika.celkovy_cas());
@@ -143,9 +149,15 @@ public class Controller implements Initializable{
             slovicka.import_rozhodnuti();
             int pocet_slov_db = slovicka.getJazyk1().size() -1;      // takovy nepekny hack toho, ze index je 0->88 a delka je 1-89, proto se odecita jednicka
             for (int i = 0; i <= pocet_slov_db; ++i){
-                list.add(slovicka.parser(i));                       // pridani slovicek do databaze typu ObservableList pro tisknuti do listView
+                jazyk1list.add(slovicka.getJazyk1().get(i));
+                jazyk2list.add(slovicka.getJazyk2().get(i));
+                if (!slovicka.getVyslovnost().isEmpty()) {
+                    vyslovnostList.add(slovicka.getVyslovnost().get(i));
+                }
             }
-            listView.setItems(list);
+            jazyk1listView.setItems(jazyk1list);
+            jazyk2listView.setItems(jazyk2list);
+            vyslovnostListView.setItems(vyslovnostList);
             pocet_slov_slider.setMax(slovicka.getJazyk1().size());   // nastaveni maximalni hodnoty na slideru
             // dialogy.Info("Info", "Slovíčka byla naimportována");
             probehlImport = true;
