@@ -5,7 +5,6 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +28,7 @@ public class Main extends Application {
                 Dialogy dialogy = new Dialogy();
                 ButtonType buttonType = dialogy.Confirm("Aplikace", "Opravdu chcete ukoncit aplikaci?").get();
                 if (buttonType == ButtonType.OK){
-                    Platform.exit();
+                    System.exit(0);
                 }
             }
         });

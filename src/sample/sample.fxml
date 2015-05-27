@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
@@ -20,9 +20,9 @@
                            </opaqueInsets></ListView>
                         <ListView fx:id="jazyk2listView" layoutX="431.0" layoutY="14.0" prefHeight="200.0" prefWidth="417.0" AnchorPane.bottomAnchor="13.0" AnchorPane.topAnchor="50.0" />
                         <ListView fx:id="vyslovnostListView" layoutX="848.0" layoutY="14.0" prefHeight="200.0" prefWidth="417.0" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0" />
-                        <Label layoutX="205.0" layoutY="21.0" text="Jazyk 1" />
-                        <Label layoutX="622.0" layoutY="21.0" text="Jazyk 2" />
-                        <Label layoutX="1039.0" layoutY="21.0" text="Vyslovnost" />
+                        <Label fx:id="jazyk1Label" layoutX="205.0" layoutY="21.0" />
+                        <Label fx:id="jazyk2Label" layoutX="622.0" layoutY="21.0" />
+                        <Label fx:id="vyslovnostLabel" layoutX="1039.0" layoutY="21.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -134,13 +134,24 @@
         <menus>
             <Menu mnemonicParsing="false" text="Nápověda">
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#handleJakPouzit" text="Jak ovládat" />
+                <MenuItem mnemonicParsing="false" onAction="#handleJakPouzit" text="Jak ovládat">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="F1" control="ANY" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                   <MenuItem mnemonicParsing="false" onAction="#handleOAppce" text="O apliakci" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePomocnaFunkce" text="Pomocny item">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="NUMPAD0" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Nastavení">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import dat" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleImport" text="Import dat">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
                   <MenuItem mnemonicParsing="false" text="Export statistiky">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />

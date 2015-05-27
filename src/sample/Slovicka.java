@@ -6,7 +6,6 @@
  * a vysledek je pocet prazdych znaku ktere se dosadi za ceske slovicko, za tohle vsechno se dosadí anglické slovíčko
  * tato trida je package-local
  *
- * TODO dodelat import slovicek, zjistit de se sekne, osetrit proti chybam
  * */
 package sample;
 
@@ -31,8 +30,9 @@ class Slovicka {
     private final ArrayList<String> jazyk2 = new ArrayList<>();
     private final ArrayList<String> vyslovnost = new ArrayList<>();
 
-    String prvniJazyk;
-    String druhyJazyk;
+    // pomocne stringy
+    private String prvniJazyk;
+    private String druhyJazyk;
 
     // funkce na rozhodnuti mezi importem s vyslovnosti nebo bez
     public void import_rozhodnuti(){
@@ -42,7 +42,6 @@ class Slovicka {
             prvniJazyk = sheet.getCell(0, 0).getContents();
             druhyJazyk = sheet.getCell(1, 0).getContents();
             String jeVyslovnost = sheet.getCell(2, 0).getContents();
-            System.out.println(jeVyslovnost);
             if (jeVyslovnost != null){
                 switch (jeVyslovnost) {
                     case "false":
@@ -57,9 +56,9 @@ class Slovicka {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            dialog.Error("Chyba", "Soubor nemohl byt otevren");
         } catch (BiffException e) {
-            e.printStackTrace();
+            dialog.Error("Chyba", "Soubor nemohl byt otevren");
         }
 
     }
@@ -123,6 +122,14 @@ class Slovicka {
 
     public ArrayList<String> getVyslovnost() {
         return vyslovnost;
+    }
+
+    public String getPrvniJazyk() {
+        return prvniJazyk;
+    }
+
+    public String getDruhyJazyk() {
+        return druhyJazyk;
     }
 
 }

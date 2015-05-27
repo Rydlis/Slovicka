@@ -67,6 +67,12 @@ public class Controller implements Initializable{
     @FXML
     private Label pocet_zkouseni;
     @FXML
+    private Label jazyk1Label;
+    @FXML
+    private Label jazyk2Label;
+    @FXML
+    private Label vyslovnostLabel;
+    @FXML
     private RadioButton chk_cesky;
     @FXML
     private RadioButton chk_anglicky;
@@ -93,6 +99,8 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // dialog zobrazovany pri nacitani aplikace, TODO nejak to vyresit, jeste nevim jak
+        // dialogy.Info("Welkome", "Application is loading");
         // import dat
         statistika.importDat();
         sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
@@ -122,22 +130,6 @@ public class Controller implements Initializable{
                 }
             }
         });
-        // novy handler pro zachazeni s dvojklikem na listview
-        /*
-        listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {                           //odposlech "double-clicku"
-                    if (mouseEvent.getClickCount() == 2) {                                          // jestli se 2x stisklo vychozi tlacitko, vykonec tuto akci
-                        // funkce na zobrazeni prekladu slovicka po dvojkliku na zvolene slovicko
-                        String cesky = slovicka.getJazyk1().get(listView.getSelectionModel().getSelectedIndex());
-                        String anglicky = "Anglicky prelozeno jako: " + slovicka.getJazyk2().get(listView.getSelectionModel().getSelectedIndex());
-                        dialogy.Dialog(cesky, anglicky);
-                    }
-                }
-            }
-        });
-        */
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);
         cas.setText(statistika.celkovy_cas());
@@ -158,8 +150,10 @@ public class Controller implements Initializable{
             jazyk1listView.setItems(jazyk1list);
             jazyk2listView.setItems(jazyk2list);
             vyslovnostListView.setItems(vyslovnostList);
+            jazyk1Label.setText(slovicka.getPrvniJazyk());
+            jazyk2Label.setText(slovicka.getDruhyJazyk());
+            vyslovnostLabel.setText("Vyslovnost");
             pocet_slov_slider.setMax(slovicka.getJazyk1().size());   // nastaveni maximalni hodnoty na slideru
-            // dialogy.Info("Info", "Slovíčka byla naimportována");
             probehlImport = true;
         } catch (IndexOutOfBoundsException e){                      // zpracovani vyjimky kdy je index vetsi jak pole
             dialogy.Error("Chyba", "Při výkonu akce došlo k chybě");
@@ -168,6 +162,7 @@ public class Controller implements Initializable{
             dialogy.Error("Chyba", "Soubor nevybrán");
             probehlImport = false;
         }
+        dialogy.Info("Info", "Slovíčka byla naimportována");
     }
 
     // funkce na start testu a nastaveni promennych
@@ -293,8 +288,16 @@ public class Controller implements Initializable{
 
     // vyhodi dialog s informacemi o aplikaci
     public void handleOAppce(){
-        dialogy.Info("Info o aplikace", "Tuto aplikaci naprogramoval David Rejdl\n" +
+        dialogy.Info("Info o aplikaci", "Tuto aplikaci naprogramoval David Rejdl\n" +
                 "Verze aplikace Beta 1, rok 2015");
+    }
+
+    public void handlePomocnaFunkce() {
+        try {
+            int i = 20 / 0;                 // wow
+        }catch (ArithmeticException e) {
+            dialogy.Message("Chyba", "Neco se zesralo", "ArithmeticException, uzivatel je idiot", e );
+        }
     }
 
     // funkce pro ukončení aplikace, vyhodi potvrzovaci dialog a pokud se rovná "OK", exportuje data do externi databaze
