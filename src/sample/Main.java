@@ -15,8 +15,23 @@ import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 
+    SplashScreen splashScreen = new SplashScreen();
+    /*
+    @Override
+    public void init(){
+        try {
+            splashScreen.init();
+            splashScreen.start(new Stage());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    */
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        splashScreen.init();
+        splashScreen.start(new Stage());
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Slovíčka");
         primaryStage.setScene(new Scene(root));
