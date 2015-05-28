@@ -16,6 +16,7 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 
     SplashScreen splashScreen = new SplashScreen();
+
     /*
     @Override
     public void init(){
@@ -36,6 +37,7 @@ public class Main extends Application {
         primaryStage.setTitle("Slovíčka");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        splashScreen.close();
         // handler na ukonceni appky
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
