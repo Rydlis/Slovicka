@@ -6,6 +6,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,12 +27,15 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Slovíčka");
         primaryStage.setScene(new Scene(root));
+        Platform.setImplicitExit(false);
         primaryStage.show();
         // handler na ukonceni appky
         primaryStage.setOnCloseRequest(event -> {
             ButtonType buttonType = dialogy.Confirm("Aplikace", "Opravdu chcete ukoncit aplikaci?").get();
             if (buttonType == ButtonType.OK){
-                System.exit(0);
+                Platform.exit();
+            } else {
+                event.consume();
             }
         });
         splashScreenController.close();
