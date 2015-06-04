@@ -13,19 +13,20 @@ import java.text.SimpleDateFormat;
 class Statistika {
 
     // zavedeni potrebnych promen
-    private long CELKOVY_CAS;
+    private static long CELKOVY_CAS;
     private long zacatecni_cas;
     private long konecny_cas;
     private int POCET_ZKOUSENI;
-    private int Spravne_odpovedi;
-    private int Spatne_odpovedi;
-    private int Celkove_odpovedi;
+    private static int Spravne_odpovedi;
+    private static int Spatne_odpovedi;
+    private static int Celkove_odpovedi;
 
     // zavedeni trid
     private final Dialogy dialog = new Dialogy();
+    private final FileManager fileManager = new FileManager();
 
     // zavedeni potrebnych promennych
-    private double Uspesnost = 0;
+    private static double Uspesnost = 0;
 
     // funkce na import dat ze souboru
     public void importDat(){
@@ -43,8 +44,25 @@ class Statistika {
         }
     }
 
-    // funkce na export dat za pouziti FileWriter
-    public void exportDat(){
+    // funkce na export dat pri vypnuti programu, proto protected static
+    public void exportData(){
+        String zapis ="";
+        zapis = zapis + "Spravne odpovedi: " + Spravne_odpovedi + "\n";
+        zapis = zapis + "Spatne odpovedi: " + Spatne_odpovedi + "\n";
+        zapis = zapis + "Celkove odpovedi: " + Celkove_odpovedi + "\n";
+        zapis = zapis + "Uspesnost " + Uspesnost + "\n";
+        zapis = zapis + "Celkovy cas zkouseni: " + celkovy_cas() + "\n";
+        try {                                                               // osetreni vyjimky kdy se nepodari zapsat data do souboru
+            FileWriter fileWriter = new FileWriter(fileManager.save());       // vytvoreni souboru statistika.txt
+            fileWriter.write(zapis);                                        // zapis drive vytvoreneho stringu s vysledky
+            fileWriter.close();                                             // uzavreni filereader
+        } catch (IOException e){
+            System.out.println("nepovedl se zapis do databaze");
+        }
+    }
+
+    // funkce na export dat pri vypnuti programu, proto protected static
+    protected static void exportDataOnClose(){
         String zapis ="";
         zapis = zapis + Spravne_odpovedi + "\n";
         zapis = zapis + Spatne_odpovedi + "\n";
@@ -56,7 +74,7 @@ class Statistika {
             fileWriter.write(zapis);                                        // zapis drive vytvoreneho stringu s vysledky
             fileWriter.close();                                             // uzavreni filereader
         } catch (IOException e){
-            dialog.Error("Chyba", "Nepovedl se zapis databaze");
+            System.out.println("nepovedl se zapis do databaze");
         }
     }
 

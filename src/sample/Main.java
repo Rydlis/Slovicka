@@ -1,6 +1,6 @@
 /**
 * Tato třída se stará o start aplikace.
- * Zároven take ukazuje Splashcreen, ktery vazne nepatri k nejlepsim resenim
+* Zároven take ukazuje Splashcreen, ktery vazne nepatri k nejlepsim resenim
 */
 
 package sample;
@@ -33,6 +33,7 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> {
             ButtonType buttonType = dialogy.Confirm("Aplikace", "Opravdu chcete ukoncit aplikaci?").get();
             if (buttonType == ButtonType.OK){
+                Statistika.exportDataOnClose();
                 Platform.exit();
             } else {
                 event.consume();

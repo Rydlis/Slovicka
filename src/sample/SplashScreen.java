@@ -31,8 +31,6 @@ public class SplashScreen extends Preloader{
                 System.out.println("Nemohl byt nacten SplashScreen");
             } catch (IllegalStateException e){
                 e.printStackTrace();
-            } catch (Exception e){
-                System.out.println("Proste to nejde");
             }
         }
 

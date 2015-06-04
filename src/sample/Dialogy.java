@@ -83,10 +83,10 @@ class Dialogy {
 
         // Set expandable Exception into the dialog pane.
         alert.getDialogPane().setExpandableContent(expContent);
-        alert.getDialogPane().setOnMousePressed(event -> {
-            alert.setHeight(400);
-            alert.setWidth(600);
-        });
+        /*alert.getDialogPane().setOnMousePressed(event -> {
+            alert.getGraphic().getScene().getWindow().setHeight(400);
+            alert.getGraphic().getScene().getWindow().setWidth(600);
+        });*/
 
         alert.showAndWait();
     }

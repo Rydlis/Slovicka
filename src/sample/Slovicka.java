@@ -21,7 +21,7 @@ import java.util.List;
 class Slovicka {
 
     // zavedeni potrebnych trid
-    private final VyberSouboru vyberSouboru = new VyberSouboru();
+    private final FileManager fileManager = new FileManager();
     private final Dialogy dialog = new Dialogy();
     private Workbook workbook;
 
@@ -37,7 +37,7 @@ class Slovicka {
     // funkce na rozhodnuti mezi importem s vyslovnosti nebo bez
     public void import_rozhodnuti(){
         try {
-            workbook = Workbook.getWorkbook(vyberSouboru.vyber());
+            workbook = Workbook.getWorkbook(fileManager.open());
             Sheet sheet = workbook.getSheet(0);
             prvniJazyk = sheet.getCell(0, 0).getContents();
             druhyJazyk = sheet.getCell(1, 0).getContents();

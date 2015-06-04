@@ -257,6 +257,10 @@ public class Controller implements Initializable{
         }
     }
 
+    public void handleUlozitStatistiku(){
+        statistika.exportData();
+    }
+
     // funkce na volani vymazani statistiky, volana funkce se nachazi ve tride Statistika
     public void handleVymazatStatistiku(){
         statistika.smazatStatistiku();
@@ -279,9 +283,9 @@ public class Controller implements Initializable{
 
     // vyhodi dialog s popisem ovladani aplikace
     public void handleJakPouzit(){
-        dialogy.Info("Jak používat", "Před startem aplikace vyber soubor se slovíčky\n" +
+        dialogy.Info("Jak používat", "Před startem aplikace open soubor se slovíčky\n" +
                 "aplikace je automaticky naimportuje a můžes se začít testovat\n" +
-                "Na začátku si vyber jazyk ze kterého se chceš zkoušet a klikni na začít");
+                "Na začátku si open jazyk ze kterého se chceš zkoušet a klikni na začít");
     }
 
     // vyhodi dialog s informacemi o aplikaci
@@ -304,7 +308,7 @@ public class Controller implements Initializable{
         ButtonType volba = dialogy.Confirm("Ukončit", "Opravdu chete ukončit aplikaci?\n" +
                 "Pozn. Pred ukoncenim se automaticky vyexportuje databaze do souboru,\n").get();
         if (volba == ButtonType.OK){
-            statistika.exportDat();
+            statistika.exportDataOnClose();
             System.exit(0);
         }
     }
