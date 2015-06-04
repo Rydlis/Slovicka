@@ -1,7 +1,13 @@
+/**
+ * Tato tridaslouzi k zobrazovani SplashScreenu pri nacitani programu.
+ * TODO vymyslet nacitani vzhledu z fxml, udelat jako nove api
+ */
+
 package sample;
 
 import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -10,24 +16,27 @@ import java.io.IOException;
 
 public class SplashScreen extends Preloader{
 
-    private Stage stage1;
+    private Stage stage;
 
     @Override
     public void start(Stage stage) {
             try {
-                stage1 = stage;
-                Scene scene = new Scene(FXMLLoader.load(getClass().getResource("splash.fxml")));
-                stage1.initStyle(StageStyle.UNDECORATED);
-                stage1.setScene(scene);
-                stage1.show();
+                this.stage = stage;
+                Parent root = FXMLLoader.load(getClass().getResource("splash.fxml"));
+                this.stage.initStyle(StageStyle.UNDECORATED);
+                this.stage.setTitle("Slovíčka");
+                this.stage.setScene(new Scene(root));
+                this.stage.show();
             } catch (IOException e){
                 System.out.println("Nemohl byt nacten SplashScreen");
             } catch (IllegalStateException e){
                 e.printStackTrace();
+            } catch (Exception e){
+                System.out.println("Proste to nejde");
             }
         }
 
     public void close(){
-    stage1.close();
+        this.stage.close();
     }
 }

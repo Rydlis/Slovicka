@@ -88,28 +88,12 @@ class Statistika {
         return Uspesnost;
     }
 
-    public void setUspesnost(double uspesnost) {
-        Uspesnost = uspesnost;
-    }
-
     public long getCELKOVY_CAS() {
         return CELKOVY_CAS;
     }
 
-    public void setCELKOVY_CAS(long CELKOVY_CAS) {
-        this.CELKOVY_CAS = CELKOVY_CAS;
-    }
-
-    public long getZacatecni_cas() {
-        return zacatecni_cas;
-    }
-
     public void setZacatecni_cas(long zacatecni_cas) {
         this.zacatecni_cas = zacatecni_cas;
-    }
-
-    public long getKonecny_cas() {
-        return konecny_cas;
     }
 
     public void setKonecny_cas(long konecny_cas) {

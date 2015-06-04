@@ -16,6 +16,6 @@ class VyberSouboru {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Excel", "*.xls")
         );
-        return fileChooser.showOpenDialog(null);
+        return fileChooser.showOpenDialog(Main.stage.getScene().getWindow());
     }
 }

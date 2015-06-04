@@ -4,7 +4,7 @@
  * Tahle trida slouzi pro obsluhu celeho programu a zaroven slouzi jako obsluha testu
  * Probiha zde samotny test, kontrola a posilani vysledku tride Statistika
  *
- * TODO dodelat vyhledavani slovicka, predelat parser na podporu vice jazyku
+ * TODO dodelat vyhledavani slovicka
  */
 package sample;
 
@@ -99,8 +99,6 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // dialog zobrazovany pri nacitani aplikace, TODO nejak to vyresit, jeste nevim jak
-        // dialogy.Info("Welkome", "Application is loading");
         // import dat
         statistika.importDat();
         sprav_odpoved.setText(String.valueOf(statistika.getSpravne_odpovedi()));
@@ -155,6 +153,7 @@ public class Controller implements Initializable{
             vyslovnostLabel.setText("Vyslovnost");
             pocet_slov_slider.setMax(slovicka.getJazyk1().size());   // nastaveni maximalni hodnoty na slideru
             probehlImport = true;
+            dialogy.Info("Info", "Slovíčka byla naimportována");
         } catch (IndexOutOfBoundsException e){                      // zpracovani vyjimky kdy je index vetsi jak pole
             dialogy.Error("Chyba", "Při výkonu akce došlo k chybě");
             probehlImport = false;
@@ -162,7 +161,6 @@ public class Controller implements Initializable{
             dialogy.Error("Chyba", "Soubor nevybrán");
             probehlImport = false;
         }
-        dialogy.Info("Info", "Slovíčka byla naimportována");
     }
 
     // funkce na start testu a nastaveni promennych
@@ -296,7 +294,7 @@ public class Controller implements Initializable{
         try {
             int i = 20 / 0;                 // wow
         }catch (ArithmeticException e) {
-            dialogy.Message("Chyba", "Neco se zesralo", "ArithmeticException, uzivatel je idiot", e );
+            dialogy.ErrorMessage("Chyba", "Neco se zesralo", "ArithmeticException, uzivatel je idiot", e);
         }
     }
 
@@ -304,8 +302,7 @@ public class Controller implements Initializable{
     // a potom ukončí aplikaci
     public void handleExit (){
         ButtonType volba = dialogy.Confirm("Ukončit", "Opravdu chete ukončit aplikaci?\n" +
-                "Pozn. Pred ukoncenim se automaticky vyexportuje databaze do souboru,\n" +
-                "poté ji můžete při dalším spuštením importovat přes menu").get();
+                "Pozn. Pred ukoncenim se automaticky vyexportuje databaze do souboru,\n").get();
         if (volba == ButtonType.OK){
             statistika.exportDat();
             System.exit(0);
