@@ -22,7 +22,6 @@ class Statistika {
     private static int Celkove_odpovedi;
 
     // zavedeni trid
-    private final Dialogy dialog = new Dialogy();
     private final FileManager fileManager = new FileManager();
 
     // zavedeni potrebnych promennych
@@ -83,7 +82,7 @@ class Statistika {
         try {
             Uspesnost = ((double) Spravne_odpovedi / (double) Celkove_odpovedi) * 100;
         } catch (ArithmeticException e) {                                   // osetreni vyjimky kdy je nulovy pocet spravnych odpovedi
-            System.out.println("Bohuzel nezijeme ve vesmiru kde lze delit nulou, bojim se ze v souboru bude Uspesnot jako Null, nebo 0");
+            System.out.println("Bohuzel nezijeme ve vesmiru kde lze delit nulou, bojim se ze v souboru bude Uspesnot jako Null, NaN nebo 0");
         }
         return Uspesnost;
     }

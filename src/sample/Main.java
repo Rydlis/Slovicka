@@ -19,11 +19,21 @@ public class Main extends Application {
     private Dialogy dialogy = new Dialogy();
     protected static Stage stage;
 
+    /*
+    @Override
+    public void init(){
+        try {
+            Thread.currentThread().join();
+            splashScreenController.init();
+            splashScreenController.start(new Stage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } */
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Main.stage = primaryStage;
-        splashScreenController.init();
-        splashScreenController.start(new Stage());
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Slovíčka");
         primaryStage.setScene(new Scene(root));
@@ -39,7 +49,6 @@ public class Main extends Application {
                 event.consume();
             }
         });
-        splashScreenController.close();
     }
 
 

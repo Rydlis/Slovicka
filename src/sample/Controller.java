@@ -11,7 +11,6 @@ package sample;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -19,7 +18,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -120,12 +118,9 @@ public class Controller implements Initializable{
             opakovani = newValue.intValue();
         });
         // novy handler, je aktivni input_slovo stisknuta klavesa ENTER zavola funkci handleDalsi(), at uzivatel nemusi klikat na tlacitko "Dalsi"
-        input_slovo.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER){
-                    handleDalsi();
-                }
+        input_slovo.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER){
+                handleDalsi();
             }
         });
         zkouseni_div.setOpacity(0);
