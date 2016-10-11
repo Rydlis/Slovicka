@@ -119,9 +119,7 @@ public class Controller implements Initializable{
         });
         // novy handler, je aktivni input_slovo stisknuta klavesa ENTER zavola funkci handleDalsi(), at uzivatel nemusi klikat na tlacitko "Dalsi"
         input_slovo.setOnKeyPressed(event -> {
-            if(event.getCode() == KeyCode.ENTER){
-                handleDalsi();
-            }
+            if(event.getCode() == KeyCode.ENTER) handleDalsi();
         });
         zkouseni_div.setOpacity(0);
         zkouseni_div.setDisable(true);

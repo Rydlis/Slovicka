@@ -34,11 +34,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Main.stage = primaryStage;
+        splashScreenController.start(new Stage());
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Slovíčka");
         primaryStage.setScene(new Scene(root));
         Platform.setImplicitExit(false);
         primaryStage.show();
+        splashScreenController.close();
         // handler na ukonceni appky
         primaryStage.setOnCloseRequest(event -> {
             ButtonType buttonType = dialogy.Confirm("Aplikace", "Opravdu chcete ukoncit aplikaci?").get();

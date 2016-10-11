@@ -16,17 +16,16 @@ import java.io.IOException;
 
 public class SplashScreen extends Preloader{
 
-    private Stage stage;
+    private Stage splachStage = new Stage();
 
     @Override
     public void start(Stage stage) {
             try {
-                this.stage = stage;
                 Parent root = FXMLLoader.load(getClass().getResource("splash.fxml"));
-                this.stage.initStyle(StageStyle.UNDECORATED);
-                this.stage.setTitle("Slovíčka");
-                this.stage.setScene(new Scene(root));
-                this.stage.show();
+                splachStage.initStyle(StageStyle.UNDECORATED);
+                splachStage.setTitle("Slovíčka");
+                splachStage.setScene(new Scene(root));
+                splachStage.show();
             } catch (IOException e){
                 System.out.println("Nemohl byt nacten SplashScreen");
             } catch (IllegalStateException e){
@@ -35,6 +34,6 @@ public class SplashScreen extends Preloader{
         }
 
     public void close(){
-        this.stage.close();
+        splachStage.close();
     }
 }
